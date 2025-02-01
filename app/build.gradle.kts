@@ -58,5 +58,6 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1") // for Kotlin coroutines support with Room
     implementation("androidx.navigation:navigation-fragment:2.5.3") // for Navigation component with fragments
     implementation("androidx.navigation:navigation-ui:2.5.3") // for Navigation component with UI
+    implementation("com.google.android.material:material:1.6.1")// Material Design
 
 }
