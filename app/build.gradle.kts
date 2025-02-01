@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt") // for Kotlin annotation processing
+    id("androidx.navigation.safeargs.kotlin") // for Safe Args
 }
 
 android {
@@ -45,4 +47,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0") // Retrofit
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0") // for JSON parsing
+    implementation("com.google.code.gson:gson:2.11.0") // Gson
+    implementation("com.github.bumptech.glide:glide:4.16.0") // for image loading
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1") // Coroutines
+    implementation("androidx.room:room-runtime:2.6.1") // Room
+    kapt("androidx.room:room-compiler:2.6.1") // for Room annotation processing
+    implementation("androidx.room:room-ktx:2.6.1") // for Kotlin coroutines support with Room
+    implementation("androidx.navigation:navigation-fragment:2.5.3") // for Navigation component with fragments
+    implementation("androidx.navigation:navigation-ui:2.5.3") // for Navigation component with UI
+
 }
