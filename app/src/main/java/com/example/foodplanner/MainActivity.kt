@@ -1,5 +1,7 @@
 package com.example.foodplanner
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val color = resources.getColor(R.color.tertiary_color, theme)
+        bottomNavigationView.itemActiveIndicatorColor = ColorStateList.valueOf(color)
 //
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
