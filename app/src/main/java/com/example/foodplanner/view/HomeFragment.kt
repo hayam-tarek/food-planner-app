@@ -1,13 +1,22 @@
 package com.example.foodplanner.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ScrollView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.foodplanner.R
+import com.example.foodplanner.viewModel.NetworkViewModel
 
 class HomeFragment : Fragment() {
+
+    private lateinit var noInternetImage: ImageView
+    private lateinit var mainContent: ScrollView
+    private val homeViewModel: NetworkViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +27,20 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        noInternetImage = view.findViewById(R.id.noInternetImage)
+        mainContent = view.findViewById(R.id.mainContent)
+        homeViewModel.checkInternetConnection()
+        homeViewModel.isConnected.observe(viewLifecycleOwner, Observer { isConnected ->
+            if (isConnected) {
+                noInternetImage.visibility = View.GONE
+                mainContent.visibility = View.VISIBLE
+            } else {
+                noInternetImage.visibility = View.VISIBLE
+                mainContent.visibility = View.GONE
+            }
+        })
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

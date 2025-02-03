@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -14,9 +15,11 @@ import com.example.foodplanner.R
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
+import com.example.foodplanner.viewModel.NetworkViewModel
 
 class RandomMealCard : Fragment() {
-    private lateinit var viewModel: MealViewModel
+    private lateinit var mealViewModel: MealViewModel
+    private val networkViewModel: NetworkViewModel by viewModels()
     private lateinit var mealName: TextView
     private lateinit var mealCountry: TextView
     private lateinit var mealCategory: TextView
@@ -34,8 +37,13 @@ class RandomMealCard : Fragment() {
         val view = inflater.inflate(R.layout.fragment_random_meal_card, container, false)
         initUI(view)
         setupViewModel()
-        viewModel.getRandomMeal()
-        viewModel.randomMeal.observe(viewLifecycleOwner) { meals ->
+        networkViewModel.checkInternetConnection()
+        networkViewModel.isConnected.observe(viewLifecycleOwner) { isConnected ->
+            if (isConnected) {
+                mealViewModel.getRandomMeal()
+            }
+        }
+        mealViewModel.randomMeal.observe(viewLifecycleOwner) { meals ->
             meals.meals[0].let {
                 mealName.text = it.strMeal
                 mealCountry.text = it.strArea
@@ -54,7 +62,7 @@ class RandomMealCard : Fragment() {
     private fun setupViewModel() {
         val retrofit = ApiClient.retrofitService
         val mealFactory = MealFactory(retrofit)
-        viewModel = ViewModelProvider(this, mealFactory)[MealViewModel::class.java]
+        mealViewModel = ViewModelProvider(this, mealFactory)[MealViewModel::class.java]
     }
 
     private fun initUI(view: View) {
