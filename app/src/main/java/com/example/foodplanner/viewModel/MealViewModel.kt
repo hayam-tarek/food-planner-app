@@ -26,6 +26,9 @@ class MealViewModel(private val retrofit: RetrofitService) : ViewModel() {
     private val _message = MutableLiveData<String>()
     val message: LiveData<String>
         get() = _message
+    private val _mealDetails = MutableLiveData<MealModel>()
+    val mealDetails: LiveData<MealModel>
+        get() = _mealDetails
 
     init {
 
@@ -38,6 +41,17 @@ class MealViewModel(private val retrofit: RetrofitService) : ViewModel() {
                 _message.postValue("No meal found")
             } else {
                 _randomMeal.postValue(meal)
+            }
+        }
+    }
+
+    fun getMealDetails(mealId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val meal = retrofit.mealDetails(mealId)
+            if (meal.meals.isEmpty()) {
+                _message.postValue("No meal found")
+            } else {
+                _mealDetails.postValue(meal)
             }
         }
     }

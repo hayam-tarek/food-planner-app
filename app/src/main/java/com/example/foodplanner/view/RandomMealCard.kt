@@ -1,5 +1,6 @@
 package com.example.foodplanner.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -54,8 +55,14 @@ class RandomMealCard : Fragment() {
                         .transform(RoundedCorners(25))
                         .into(mealImage)
                 }
+                view.setOnClickListener {
+                    val intent = Intent(requireContext(), MealDetails::class.java)
+                    intent.putExtra("mealId", meals.meals[0].idMeal)
+                    startActivity(intent)
+                }
             }
         }
+
         return view
     }
 
