@@ -5,15 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.foodplanner.R
 
-class ItemsAdapter(val context: Context, private val data: List<String>) :
-    Adapter<ItemsAdapter.ItemsHolder>() {
+class ItemsAdapter(
+    val context: Context,
+    var data: List<String>,
+    var subData: List<String>
+) : RecyclerView.
+Adapter<ItemsAdapter.ItemsHolder>() {
     class ItemsHolder(val row: View) : RecyclerView.ViewHolder(row) {
         val title: TextView = row.findViewById(R.id.textBoxTitle)
+        val subTitle: TextView = row.findViewById(R.id.textBoxSubTitle)
     }
 
     override fun getItemCount(): Int {
@@ -30,6 +33,7 @@ class ItemsAdapter(val context: Context, private val data: List<String>) :
 
     override fun onBindViewHolder(holder: ItemsHolder, position: Int) {
         holder.title.text = data[position].toString()
+        holder.subTitle.text = subData[position].toString()
         holder.row.setOnClickListener {
 //            Toast.makeText(context, data[position], Toast.LENGTH_SHORT).show()
         }

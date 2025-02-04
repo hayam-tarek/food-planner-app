@@ -21,6 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
 import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.model.getIngredientsList
+import com.example.foodplanner.model.getMeasuresList
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
@@ -37,6 +38,7 @@ class MealDetails : AppCompatActivity() {
     private lateinit var mealVideo: WebView
     private lateinit var fabButton: FloatingActionButton
     private lateinit var ingredientsList: RecyclerView
+    private lateinit var itemsAdapter: ItemsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +62,9 @@ class MealDetails : AppCompatActivity() {
                 mealCategory.text = it.strCategory
                 mealInstructions.text = it.strInstructions
                 toolbar.title = it.strMeal
-                ingredientsList.adapter =
-                    ItemsAdapter(this, it.getIngredientsList() as List<String>)
+                itemsAdapter.data = it.getIngredientsList() as List<String>
+                itemsAdapter.subData = it.getMeasuresList() as List<String>
+                itemsAdapter.notifyDataSetChanged()
                 loadYouTubeVideo(it.strYoutube!!)
                 runOnUiThread {
                     Glide.with(this)
@@ -94,6 +97,8 @@ class MealDetails : AppCompatActivity() {
         mealVideo = findViewById(R.id.mealDetailVideo)
         fabButton = findViewById(R.id.fabButton)
         ingredientsList = findViewById(R.id.ingredientsList)
+        itemsAdapter = ItemsAdapter(this, listOf(), listOf())
+        ingredientsList.adapter = itemsAdapter
         ingredientsList.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }

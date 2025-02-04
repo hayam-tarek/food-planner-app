@@ -12,6 +12,15 @@ fun Meal.getIngredientsList(): List<String?> {
     ).filter { !it.isNullOrEmpty() }
 }
 
+fun Meal.getMeasuresList(): List<String?> {
+    return listOf(
+        strMeasure1, strMeasure2, strMeasure3, strMeasure4, strMeasure5,
+        strMeasure6, strMeasure7, strMeasure8, strMeasure9, strMeasure10,
+        strMeasure11, strMeasure12, strMeasure13, strMeasure14, strMeasure15,
+        strMeasure16, strMeasure17, strMeasure18, strMeasure19, strMeasure20
+    ).filter { !it.isNullOrEmpty() }
+}
+
 @Entity(tableName = "meals")
 data class Meal(
     val dateModified: String?,
