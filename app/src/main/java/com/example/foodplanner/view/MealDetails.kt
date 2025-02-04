@@ -14,9 +14,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
+import com.example.foodplanner.model.getIngredientsList
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
@@ -32,6 +35,7 @@ class MealDetails : AppCompatActivity() {
     private lateinit var mealInstructions: TextView
     private lateinit var mealVideo: WebView
     private lateinit var fabButton: FloatingActionButton
+    private lateinit var ingredientsList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +59,7 @@ class MealDetails : AppCompatActivity() {
                 mealCategory.text = it.strCategory
                 mealInstructions.text = it.strInstructions
                 toolbar.title = it.strMeal
+                ingredientsList.adapter = ItemsAdapter(this, it.getIngredientsList())
                 loadYouTubeVideo(it.strYoutube)
                 runOnUiThread {
                     Glide.with(this)
@@ -62,6 +67,7 @@ class MealDetails : AppCompatActivity() {
                         .transform(RoundedCorners(25))
                         .into(mealImage)
                 }
+                println(it.getIngredientsList())
             }
         }
         fabButton.setOnClickListener {
@@ -83,6 +89,10 @@ class MealDetails : AppCompatActivity() {
         mealInstructions = findViewById(R.id.mealDetailSteps)
         mealVideo = findViewById(R.id.mealDetailVideo)
         fabButton = findViewById(R.id.fabButton)
+        ingredientsList = findViewById(R.id.ingredientsList)
+        ingredientsList.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
 
     }
 

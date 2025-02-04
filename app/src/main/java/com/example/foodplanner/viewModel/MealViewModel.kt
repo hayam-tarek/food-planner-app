@@ -1,5 +1,6 @@
 package com.example.foodplanner.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,22 +37,30 @@ class MealViewModel(private val retrofit: RetrofitService) : ViewModel() {
 
     fun getRandomMeal() {
         viewModelScope.launch(Dispatchers.IO) {
-            val meal = retrofit.randomMeal()
-            if (meal.meals.isEmpty()) {
-                _message.postValue("No meal found")
-            } else {
-                _randomMeal.postValue(meal)
+            try {
+                val meal = retrofit.randomMeal()
+                if (meal.meals.isEmpty()) {
+                    _message.postValue("No meal found")
+                } else {
+                    _randomMeal.postValue(meal)
+                }
+            } catch (e: Exception) {
+                Log.i("MealViewModel", "getRandomMeal: ${e.message}")
             }
         }
     }
 
     fun getMealDetails(mealId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val meal = retrofit.mealDetails(mealId)
-            if (meal.meals.isEmpty()) {
-                _message.postValue("No meal found")
-            } else {
-                _mealDetails.postValue(meal)
+            try {
+                val meal = retrofit.mealDetails(mealId)
+                if (meal.meals.isEmpty()) {
+                    _message.postValue("No meal found")
+                } else {
+                    _mealDetails.postValue(meal)
+                }
+            } catch (e: Exception) {
+                Log.i("MealViewModel", "getMealDetails: ${e.message}")
             }
         }
     }
