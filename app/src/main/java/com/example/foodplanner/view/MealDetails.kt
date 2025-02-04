@@ -14,8 +14,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
@@ -100,7 +100,9 @@ class MealDetails : AppCompatActivity() {
         itemsAdapter = ItemsAdapter(this, listOf(), listOf())
         ingredientsList.adapter = itemsAdapter
         ingredientsList.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
+//        ingredientsList.layoutManager =
+//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun setupViewModel() {

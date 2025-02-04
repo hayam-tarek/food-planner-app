@@ -46,7 +46,8 @@
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal"
                     android:scrollbars="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                    app:spanCount="4"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -117,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Name"
+                    android:text="Name..."
                     android:textColor="@color/primary_color"
                     android:textSize="26sp"
                     android:textStyle="bold|italic"
@@ -147,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="steps"
+                    android:text="Steps..."
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -179,7 +180,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="8dp"
                         android:gravity="center"
-                        android:text="area"
+                        android:text="Area..."
                         android:textSize="16sp" />
 
                     <ImageView
@@ -194,7 +195,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="8dp"
                         android:gravity="center"
-                        android:text="category"
+                        android:text="Category..."
                         android:textSize="16sp" />
                 </LinearLayout>
 

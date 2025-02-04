@@ -12,7 +12,7 @@ import com.example.foodplanner.model.Meal
 interface MealDao {
 
     @Query("SELECT * FROM meals")
-    suspend fun getAll(): Array<Meal>
+    suspend fun getAll(): List<Meal>
 
     @Query("SELECT * FROM meals WHERE idMeal = :id")
     suspend fun getMealById(id: Int): List<Meal>
