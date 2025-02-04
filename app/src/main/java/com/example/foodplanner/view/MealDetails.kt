@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
+import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.model.getIngredientsList
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.viewModel.MealFactory
@@ -59,19 +60,22 @@ class MealDetails : AppCompatActivity() {
                 mealCategory.text = it.strCategory
                 mealInstructions.text = it.strInstructions
                 toolbar.title = it.strMeal
-                ingredientsList.adapter = ItemsAdapter(this, it.getIngredientsList())
-                loadYouTubeVideo(it.strYoutube)
+                ingredientsList.adapter =
+                    ItemsAdapter(this, it.getIngredientsList() as List<String>)
+                loadYouTubeVideo(it.strYoutube!!)
                 runOnUiThread {
                     Glide.with(this)
                         .load(it.strMealThumb)
                         .transform(RoundedCorners(25))
                         .into(mealImage)
                 }
-                println(it.getIngredientsList())
+                fabButton.setOnClickListener {
+                    mealViewModel.addMealToFav(meal.meals[0])
+                }
             }
         }
-        fabButton.setOnClickListener {
-            Toast.makeText(this, "FAB Clicked!", Toast.LENGTH_SHORT).show()
+        mealViewModel.message.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -92,13 +96,12 @@ class MealDetails : AppCompatActivity() {
         ingredientsList = findViewById(R.id.ingredientsList)
         ingredientsList.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-
     }
 
     private fun setupViewModel() {
         val retrofit = ApiClient.retrofitService
-        val mealFactory = MealFactory(retrofit)
+        val mealDao = MealDataBase.getInstance(this).mealDao()
+        val mealFactory = MealFactory(retrofit, mealDao)
         mealViewModel = ViewModelProvider(this, mealFactory)[MealViewModel::class.java]
     }
 

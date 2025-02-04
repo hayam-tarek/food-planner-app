@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
+import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
@@ -68,7 +69,8 @@ class RandomMealCard : Fragment() {
 
     private fun setupViewModel() {
         val retrofit = ApiClient.retrofitService
-        val mealFactory = MealFactory(retrofit)
+        val mealDao = MealDataBase.getInstance(requireContext()).mealDao()
+        val mealFactory = MealFactory(retrofit, mealDao)
         mealViewModel = ViewModelProvider(this, mealFactory)[MealViewModel::class.java]
     }
 

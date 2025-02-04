@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt") // for Kotlin annotation processing
+    id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin") // for Safe Args
 }
 
@@ -53,11 +53,11 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0") // Gson
     implementation("com.github.bumptech.glide:glide:4.16.0") // for image loading
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1") // Coroutines
-    implementation("androidx.room:room-runtime:2.6.1") // Room
-    kapt("androidx.room:room-compiler:2.6.1") // for Room annotation processing
-    implementation("androidx.room:room-ktx:2.6.1") // for Kotlin coroutines support with Room
+    implementation("androidx.room:room-ktx:2.7.0-alpha12")
+    implementation("androidx.room:room-runtime:2.7.0-alpha12")
+    kapt("androidx.room:room-compiler:2.7.0-alpha12")
     implementation("androidx.navigation:navigation-fragment:2.5.3") // for Navigation component with fragments
     implementation("androidx.navigation:navigation-ui:2.5.3") // for Navigation component with UI
-    implementation("com.google.android.material:material:1.6.1")// Material Design
-
+    // implementation("com.google.android.material:material:1.6.1")// Material Design
+    //implementationlementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
 }
