@@ -114,13 +114,17 @@ class MealDetails : AppCompatActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun loadYouTubeVideo(youtubeUrl: String) {
-        val videoId = youtubeUrl.split("v=")[1] // Extract YouTube video ID
-        val embedUrl = "https://www.youtube.com/embed/$videoId"
+        try {
+            val videoId = youtubeUrl.split("v=")[1]
+            val embedUrl = "https://www.youtube.com/embed/$videoId"
 
-        mealVideo.settings.javaScriptEnabled = true
-        mealVideo.settings.pluginState = WebSettings.PluginState.ON
-        mealVideo.settings.mediaPlaybackRequiresUserGesture = false
-        mealVideo.webViewClient = WebViewClient()
-        mealVideo.loadUrl(embedUrl)
+            mealVideo.settings.javaScriptEnabled = true
+            mealVideo.settings.pluginState = WebSettings.PluginState.ON
+            mealVideo.settings.mediaPlaybackRequiresUserGesture = false
+            mealVideo.webViewClient = WebViewClient()
+            mealVideo.loadUrl(embedUrl)
+        } catch (e: Exception) {
+            Toast.makeText(this, "No video found", Toast.LENGTH_SHORT).show()
+        }
     }
 }

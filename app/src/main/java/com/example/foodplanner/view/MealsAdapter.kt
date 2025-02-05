@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
 import com.example.foodplanner.model.Meal
+import com.example.foodplanner.utils.MealListener
 
 class MealsAdapter(
     val context: Context,
     var data: List<Meal>,
+    var mealListener: MealListener
 ) : RecyclerView.
 Adapter<MealsAdapter.MealsHolder>() {
     class MealsHolder(val row: View) : RecyclerView.ViewHolder(row) {
@@ -42,7 +44,7 @@ Adapter<MealsAdapter.MealsHolder>() {
             .into(holder.mealImage)
 
         holder.row.setOnClickListener {
-//            Toast.makeText(context, data[position], Toast.LENGTH_SHORT).show()
+            mealListener.onMealClicked(data[position])
         }
     }
 
