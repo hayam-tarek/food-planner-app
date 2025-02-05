@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ class FavoritesFragment : Fragment(), MealListener {
     private lateinit var favoritesRecyclerView: RecyclerView
     private lateinit var mealViewModel: MealViewModel
     private lateinit var mealsAdapter: MealsAdapter
+    private lateinit var noFavsImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +43,27 @@ class FavoritesFragment : Fragment(), MealListener {
         setupViewModel()
         mealViewModel.getFavorites()
         mealViewModel.favorites.observe(viewLifecycleOwner) { meals ->
-            mealsAdapter.data = meals
-            mealsAdapter.notifyDataSetChanged()
+            if (meals.isNotEmpty()) {
+                favoritesRecyclerView.visibility = View.VISIBLE
+                noFavsImage.visibility = View.GONE
+                mealsAdapter.data = meals
+                mealsAdapter.notifyDataSetChanged()
+            } else {
+                favoritesRecyclerView.visibility = View.GONE
+                noFavsImage.visibility = View.VISIBLE
+            }
+
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mealViewModel.getFavorites()
     }
 
     private fun initUI(view: View) {
         favoritesRecyclerView = view.findViewById(R.id.favoritesRecyclerView)
+        noFavsImage = view.findViewById(R.id.noFavsImage)
         mealsAdapter = MealsAdapter(requireContext(), listOf(), this)
         favoritesRecyclerView.adapter = mealsAdapter
         favoritesRecyclerView.layoutManager =
@@ -66,5 +82,9 @@ class FavoritesFragment : Fragment(), MealListener {
         val intent = Intent(requireContext(), MealDetails::class.java)
         intent.putExtra("mealId", meal.idMeal)
         startActivity(intent)
+    }
+
+    override fun onMealFavClicked(meal: Meal) {
+        TODO("Not yet implemented")
     }
 }

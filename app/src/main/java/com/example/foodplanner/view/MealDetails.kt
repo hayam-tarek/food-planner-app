@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -70,10 +71,14 @@ class MealDetails : AppCompatActivity() {
         mealViewModel.mealDetails.observe(this) { meal ->
             meal.meals[0].let {
                 updateUi(it)
+                mealViewModel.checkIfFavorite(it)
                 fabButton.setOnClickListener {
-                    mealViewModel.addMealToFav(meal.meals[0])
+                    mealViewModel.toggleFavorite(meal.meals[0])
                 }
             }
+        }
+        mealViewModel.isFavorite.observe(this) { isFavorite ->
+            updateFavoriteIcon(isFavorite)
         }
         mealViewModel.message.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -81,9 +86,28 @@ class MealDetails : AppCompatActivity() {
         mealViewModel.favoriteMeal.observe(this) {
             val meal = it
             updateUi(it)
+            mealViewModel.checkIfFavorite(it)
             fabButton.setOnClickListener {
-                mealViewModel.addMealToFav(meal)
+                mealViewModel.toggleFavorite(meal)
             }
+        }
+    }
+
+    private fun updateFavoriteIcon(isFavorite: Boolean) {
+        if (isFavorite) {
+            fabButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.in_fav
+                )
+            )
+        } else {
+            fabButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.out_fav
+                )
+            )
         }
     }
 
@@ -120,6 +144,7 @@ class MealDetails : AppCompatActivity() {
         mealVideo = findViewById(R.id.mealDetailVideo)
         recipeVideo = findViewById(R.id.recipeVideo)
         fabButton = findViewById(R.id.fabButton)
+        fabButton.imageTintList = null
         ingredientsList = findViewById(R.id.ingredientsList)
         itemsAdapter = ItemsAdapter(this, listOf(), listOf())
         ingredientsList.adapter = itemsAdapter

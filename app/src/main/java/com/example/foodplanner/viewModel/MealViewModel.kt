@@ -40,8 +40,11 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     private val _favoriteMeal = MutableLiveData<Meal>()
     val favoriteMeal: LiveData<Meal> get() = _favoriteMeal
 
-    init {
+    private val _isFavorite = MutableLiveData<Boolean>()
+    val isFavorite: LiveData<Boolean> get() = _isFavorite
 
+    init {
+        getFavorites()
     }
 
     fun getRandomMeal() {
@@ -126,6 +129,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                 val meals = dao.getAll()
                 withContext(Dispatchers.Main) {
                     if (meals.isEmpty()) {
+                        _favorites.postValue(listOf())
                         _message.postValue("No favorites found")
                     } else {
                         _favorites.postValue(meals)
@@ -156,6 +160,47 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     _message.value = "Error fetching meal: ${e.message}"
                 }
                 Log.i("MealViewModel", "getFavoriteMealById: ${e.message}")
+            }
+        }
+    }
+
+    fun toggleFavorite(meal: Meal) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val existingMeal = dao.getMealById(meal.idMeal.toInt())
+                withContext(Dispatchers.Main) {
+                    if (existingMeal != null) {
+                        dao.delete(meal)
+                        _isFavorite.postValue(false)
+                        _message.postValue("Meal removed from favorites")
+                    } else {
+                        dao.insert(meal)
+                        _isFavorite.postValue(true)
+                        _message.postValue("Meal added to favorites")
+                    }
+                    getFavorites()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error toggling favorite: ${e.message}"
+                }
+                Log.i("MealViewModel", "toggleFavorite: ${e.message}")
+            }
+        }
+    }
+
+    fun checkIfFavorite(meal: Meal) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = dao.getMealById(meal.idMeal.toInt())
+                withContext(Dispatchers.Main) {
+                    _isFavorite.value = result != null
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error checking if meal is favorite: ${e.message}"
+                }
+                Log.i("MealViewModel", "checkIfFavorite: ${e.message}")
             }
         }
     }

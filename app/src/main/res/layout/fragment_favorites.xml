@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginHorizontal="16sp"
     tools:context=".view.FavoritesFragment">
 
@@ -15,10 +15,15 @@
         android:clipToPadding="false"
         android:fillViewport="true"
         android:fitsSystemWindows="true"
-        android:scrollbars="vertical"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-        app:spanCount="2"
+        app:spanCount="2" />
 
-        />
+    <ImageView
+        android:id="@+id/noFavsImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/empty_heart"
+        android:visibility="visible" />
 </FrameLayout>

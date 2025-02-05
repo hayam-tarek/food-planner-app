@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@color/tertiary_color"
-        android:src="@drawable/add_to_favorites"
+        android:src="@drawable/out_fav"
         app:layout_anchor="@id/mealDetailImage"
         app:layout_anchorGravity="bottom|right" />
 

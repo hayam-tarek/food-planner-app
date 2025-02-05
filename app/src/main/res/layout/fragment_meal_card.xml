@@ -61,7 +61,7 @@
                 android:id="@+id/favIcon"
                 android:layout_width="25dp"
                 android:layout_height="30dp"
-                android:src="@drawable/add_to_favorites"
+                android:src="@drawable/out_fav"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.975"

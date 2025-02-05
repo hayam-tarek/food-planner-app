@@ -22,6 +22,7 @@ Adapter<MealsAdapter.MealsHolder>() {
     class MealsHolder(val row: View) : RecyclerView.ViewHolder(row) {
         val mealName: TextView = row.findViewById(R.id.mealName)
         val mealImage: ImageView = row.findViewById(R.id.mealImage)
+        val mealFavIcon: ImageView = row.findViewById(R.id.favIcon)
     }
 
     override fun getItemCount(): Int {
@@ -45,6 +46,10 @@ Adapter<MealsAdapter.MealsHolder>() {
 
         holder.row.setOnClickListener {
             mealListener.onMealClicked(data[position])
+        }
+
+        holder.mealFavIcon.setOnClickListener {
+            mealListener.onMealFavClicked(data[position])
         }
     }
 
