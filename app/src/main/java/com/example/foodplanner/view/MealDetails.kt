@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
 import com.example.foodplanner.db.MealDataBase
+import com.example.foodplanner.model.Meal
 import com.example.foodplanner.model.getIngredientsList
 import com.example.foodplanner.model.getMeasuresList
 import com.example.foodplanner.network.ApiClient
@@ -39,6 +40,7 @@ class MealDetails : AppCompatActivity() {
     private lateinit var fabButton: FloatingActionButton
     private lateinit var ingredientsList: RecyclerView
     private lateinit var itemsAdapter: ItemsAdapter
+    private  lateinit var recipeVideo: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,21 +59,7 @@ class MealDetails : AppCompatActivity() {
         mealViewModel.getMealDetails(mealId!!)
         mealViewModel.mealDetails.observe(this) { meal ->
             meal.meals[0].let {
-                mealName.text = it.strMeal
-                mealArea.text = it.strArea
-                mealCategory.text = it.strCategory
-                mealInstructions.text = it.strInstructions
-                toolbar.title = it.strMeal
-                itemsAdapter.data = it.getIngredientsList() as List<String>
-                itemsAdapter.subData = it.getMeasuresList() as List<String>
-                itemsAdapter.notifyDataSetChanged()
-                loadYouTubeVideo(it.strYoutube!!)
-                runOnUiThread {
-                    Glide.with(this)
-                        .load(it.strMealThumb)
-                        .transform(RoundedCorners(25))
-                        .into(mealImage)
-                }
+                updateUi(it)
                 fabButton.setOnClickListener {
                     mealViewModel.addMealToFav(meal.meals[0])
                 }
@@ -79,6 +67,24 @@ class MealDetails : AppCompatActivity() {
         }
         mealViewModel.message.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun updateUi(meal: Meal) {
+        mealName.text = meal.strMeal
+        mealArea.text = meal.strArea
+        mealCategory.text = meal.strCategory
+        mealInstructions.text = meal.strInstructions
+        toolbar.title = meal.strMeal
+        itemsAdapter.data = meal.getIngredientsList() as List<String>
+        itemsAdapter.subData = meal.getMeasuresList() as List<String>
+        itemsAdapter.notifyDataSetChanged()
+        loadYouTubeVideo(meal.strYoutube!!)
+        runOnUiThread {
+            Glide.with(this)
+                .load(meal.strMealThumb)
+                .transform(RoundedCorners(25))
+                .into(mealImage)
         }
     }
 
@@ -95,14 +101,13 @@ class MealDetails : AppCompatActivity() {
         mealCategory = findViewById(R.id.mealDetailCategory)
         mealInstructions = findViewById(R.id.mealDetailSteps)
         mealVideo = findViewById(R.id.mealDetailVideo)
+        recipeVideo = findViewById(R.id.recipeVideo)
         fabButton = findViewById(R.id.fabButton)
         ingredientsList = findViewById(R.id.ingredientsList)
         itemsAdapter = ItemsAdapter(this, listOf(), listOf())
         ingredientsList.adapter = itemsAdapter
         ingredientsList.layoutManager =
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
-//        ingredientsList.layoutManager =
-//            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun setupViewModel() {
@@ -125,6 +130,8 @@ class MealDetails : AppCompatActivity() {
             mealVideo.loadUrl(embedUrl)
         } catch (e: Exception) {
             Toast.makeText(this, "No video found", Toast.LENGTH_SHORT).show()
+            mealVideo.visibility = WebView.GONE
+            recipeVideo.visibility = TextView.GONE
         }
     }
 }

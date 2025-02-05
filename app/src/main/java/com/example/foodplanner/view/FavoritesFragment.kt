@@ -32,6 +32,11 @@ class FavoritesFragment : Fragment(), MealListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_favorites, container, false)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initUI(view)
         setupViewModel()
         mealViewModel.getFavorites()
@@ -39,11 +44,6 @@ class FavoritesFragment : Fragment(), MealListener {
             mealsAdapter.data = meals
             mealsAdapter.notifyDataSetChanged()
         }
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun initUI(view: View) {
@@ -58,7 +58,7 @@ class FavoritesFragment : Fragment(), MealListener {
         val retrofit = ApiClient.retrofitService
         val mealDao = MealDataBase.getInstance(requireContext()).mealDao()
         val mealFactory = MealFactory(retrofit, mealDao)
-        mealViewModel = ViewModelProvider(this, mealFactory)[MealViewModel::class.java]
+        mealViewModel = ViewModelProvider(requireActivity(), mealFactory)[MealViewModel::class.java]
 
     }
 

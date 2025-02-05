@@ -14,29 +14,35 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
 import com.example.foodplanner.db.MealDataBase
+import com.example.foodplanner.model.Meal
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
 import com.example.foodplanner.viewModel.NetworkViewModel
 
-class RandomMealCard : Fragment() {
+class RandomMealCardFragment : Fragment() {
+
     private lateinit var mealViewModel: MealViewModel
     private val networkViewModel: NetworkViewModel by viewModels()
     private lateinit var mealName: TextView
     private lateinit var mealCountry: TextView
     private lateinit var mealCategory: TextView
     private lateinit var mealImage: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_random_meal_card, container, false)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initUI(view)
         setupViewModel()
         networkViewModel.checkInternetConnection()
@@ -47,15 +53,7 @@ class RandomMealCard : Fragment() {
         }
         mealViewModel.randomMeal.observe(viewLifecycleOwner) { meals ->
             meals.meals[0].let {
-                mealName.text = it.strMeal
-                mealCountry.text = it.strArea
-                mealCategory.text = it.strCategory
-                requireActivity().runOnUiThread {
-                    Glide.with(requireContext())
-                        .load(it.strMealThumb)
-                        .transform(RoundedCorners(25))
-                        .into(mealImage)
-                }
+                updateUi(it)
                 view.setOnClickListener {
                     val intent = Intent(requireContext(), MealDetails::class.java)
                     intent.putExtra("mealId", meals.meals[0].idMeal)
@@ -63,15 +61,13 @@ class RandomMealCard : Fragment() {
                 }
             }
         }
-
-        return view
     }
 
     private fun setupViewModel() {
         val retrofit = ApiClient.retrofitService
         val mealDao = MealDataBase.getInstance(requireContext()).mealDao()
         val mealFactory = MealFactory(retrofit, mealDao)
-        mealViewModel = ViewModelProvider(this, mealFactory)[MealViewModel::class.java]
+        mealViewModel = ViewModelProvider(requireActivity(), mealFactory)[MealViewModel::class.java]
     }
 
     private fun initUI(view: View) {
@@ -79,5 +75,15 @@ class RandomMealCard : Fragment() {
         mealCountry = view.findViewById<TextView>(R.id.mealCountry)
         mealImage = view.findViewById<ImageView>(R.id.mealImage)
         mealCategory = view.findViewById<TextView>(R.id.mealCategory)
+    }
+
+    private fun updateUi(meal: Meal) {
+        mealName.text = meal.strMeal
+        mealCountry.text = meal.strArea
+        mealCategory.text = meal.strCategory
+        requireActivity().runOnUiThread {
+            Glide.with(requireContext()).load(meal.strMealThumb).transform(RoundedCorners(25))
+                .into(mealImage)
+        }
     }
 }

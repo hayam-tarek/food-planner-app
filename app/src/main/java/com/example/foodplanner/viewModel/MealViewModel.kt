@@ -12,6 +12,7 @@ import com.example.foodplanner.model.MealModel
 import com.example.foodplanner.network.RetrofitService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MealFactory(private val retrofit: RetrofitService, private val dao: MealDao) :
     ViewModelProvider.Factory {
@@ -45,12 +46,17 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val meal = retrofit.randomMeal()
-                if (meal.meals.isEmpty()) {
-                    _message.postValue("No meal found")
-                } else {
-                    _randomMeal.postValue(meal)
+                withContext(Dispatchers.Main) {
+                    if (meal.meals.isEmpty()) {
+                        _message.postValue("No meal found")
+                    } else {
+                        _randomMeal.postValue(meal)
+                    }
                 }
             } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching meal: ${e.message}"
+                }
                 Log.i("MealViewModel", "getRandomMeal: ${e.message}")
             }
         }
@@ -60,12 +66,17 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val meal = retrofit.mealDetails(mealId)
-                if (meal.meals.isEmpty()) {
-                    _message.postValue("No meal found")
-                } else {
-                    _mealDetails.postValue(meal)
+                withContext(Dispatchers.Main) {
+                    if (meal.meals.isEmpty()) {
+                        _message.postValue("No meal found")
+                    } else {
+                        _mealDetails.postValue(meal)
+                    }
                 }
             } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching meal: ${e.message}"
+                }
                 Log.i("MealViewModel", "getMealDetails: ${e.message}")
             }
         }
@@ -75,12 +86,17 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val result = dao.insert(meal)
-                if (result == -1L) {
-                    _message.postValue("Meal already exists in the favorites")
-                } else {
-                    _message.postValue("Meal added to the favorites")
+                withContext(Dispatchers.Main) {
+                    if (result == -1L) {
+                        _message.postValue("Meal already exists in the favorites")
+                    } else {
+                        _message.postValue("Meal added to the favorites")
+                    }
                 }
             } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error adding meal to favorites: ${e.message}"
+                }
                 Log.i("MealViewModel", "addMealToDb: ${e.message}")
             }
         }
@@ -90,8 +106,13 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 dao.delete(meal)
-                _message.postValue("Meal deleted from the favorites")
+                withContext(Dispatchers.Main) {
+                    _message.postValue("Meal deleted from the favorites")
+                }
             } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error deleting meal from favorites: ${e.message}"
+                }
                 Log.i("MealViewModel", "deleteMealFromFav: ${e.message}")
             }
         }
@@ -101,8 +122,17 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val meals = dao.getAll()
-                _favorites.postValue(meals)
+                withContext(Dispatchers.Main) {
+                    if (meals.isEmpty()) {
+                        _message.postValue("No favorites found")
+                    } else {
+                        _favorites.postValue(meals)
+                    }
+                }
             } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching favorites: ${e.message}"
+                }
                 Log.i("MealViewModel", "getFavorites: ${e.message}")
             }
         }

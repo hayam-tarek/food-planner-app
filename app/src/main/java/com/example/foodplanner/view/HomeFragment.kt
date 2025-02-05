@@ -16,7 +16,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var noInternetImage: ImageView
     private lateinit var mainContent: ScrollView
-    private val homeViewModel: NetworkViewModel by viewModels()
+    private val networkViewModel: NetworkViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +28,14 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        noInternetImage = view.findViewById(R.id.noInternetImage)
-        mainContent = view.findViewById(R.id.mainContent)
-        homeViewModel.checkInternetConnection()
-        homeViewModel.isConnected.observe(viewLifecycleOwner, Observer { isConnected ->
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUi(view)
+        networkViewModel.checkInternetConnection()
+        networkViewModel.isConnected.observe(viewLifecycleOwner, Observer { isConnected ->
             if (isConnected) {
                 noInternetImage.visibility = View.GONE
                 mainContent.visibility = View.VISIBLE
@@ -40,10 +44,10 @@ class HomeFragment : Fragment() {
                 mainContent.visibility = View.GONE
             }
         })
-        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun initUi(view: View) {
+        noInternetImage = view.findViewById(R.id.noInternetImage)
+        mainContent = view.findViewById(R.id.mainContent)
     }
 }

@@ -50,7 +50,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/randomMealCard"
-                android:name="com.example.foodplanner.view.RandomMealCard"
+                android:name="com.example.foodplanner.view.RandomMealCardFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
