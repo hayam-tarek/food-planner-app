@@ -26,10 +26,12 @@ import com.example.foodplanner.model.getMeasuresList
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
+import com.example.foodplanner.viewModel.NetworkViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MealDetails : AppCompatActivity() {
     private lateinit var mealViewModel: MealViewModel
+    private lateinit var networkViewModel: NetworkViewModel
     private lateinit var toolbar: Toolbar
     private lateinit var mealName: TextView
     private lateinit var mealImage: ImageView
@@ -40,7 +42,7 @@ class MealDetails : AppCompatActivity() {
     private lateinit var fabButton: FloatingActionButton
     private lateinit var ingredientsList: RecyclerView
     private lateinit var itemsAdapter: ItemsAdapter
-    private  lateinit var recipeVideo: TextView
+    private lateinit var recipeVideo: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +58,15 @@ class MealDetails : AppCompatActivity() {
         setupViewModel()
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        mealViewModel.getMealDetails(mealId!!)
+        networkViewModel.checkInternetConnection()
+        networkViewModel.isConnected.observe(this) { isConnected ->
+            if (isConnected) {
+                mealViewModel.getMealDetails(mealId!!)
+            } else {
+                mealViewModel.getFavoriteMealById(mealId!!)
+            }
+        }
+
         mealViewModel.mealDetails.observe(this) { meal ->
             meal.meals[0].let {
                 updateUi(it)
@@ -67,6 +77,13 @@ class MealDetails : AppCompatActivity() {
         }
         mealViewModel.message.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
+        mealViewModel.favoriteMeal.observe(this) {
+            val meal = it
+            updateUi(it)
+            fabButton.setOnClickListener {
+                mealViewModel.addMealToFav(meal)
+            }
         }
     }
 
@@ -115,6 +132,7 @@ class MealDetails : AppCompatActivity() {
         val mealDao = MealDataBase.getInstance(this).mealDao()
         val mealFactory = MealFactory(retrofit, mealDao)
         mealViewModel = ViewModelProvider(this, mealFactory)[MealViewModel::class.java]
+        networkViewModel = ViewModelProvider(this)[NetworkViewModel::class.java]
     }
 
     @SuppressLint("SetJavaScriptEnabled")

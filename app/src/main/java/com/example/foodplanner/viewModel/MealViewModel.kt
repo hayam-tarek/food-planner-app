@@ -26,17 +26,19 @@ class MealFactory(private val retrofit: RetrofitService, private val dao: MealDa
 
 class MealViewModel(private val retrofit: RetrofitService, private val dao: MealDao) : ViewModel() {
     private val _randomMeal = MutableLiveData<MealModel>()
-    val randomMeal: LiveData<MealModel>
-        get() = _randomMeal
+    val randomMeal: LiveData<MealModel> get() = _randomMeal
+
     private val _message = MutableLiveData<String>()
-    val message: LiveData<String>
-        get() = _message
+    val message: LiveData<String> get() = _message
+
     private val _mealDetails = MutableLiveData<MealModel>()
-    val mealDetails: LiveData<MealModel>
-        get() = _mealDetails
+    val mealDetails: LiveData<MealModel> get() = _mealDetails
+
     private val _favorites = MutableLiveData<List<Meal>>()
-    val favorites: LiveData<List<Meal>>
-        get() = _favorites
+    val favorites: LiveData<List<Meal>> get() = _favorites
+
+    private val _favoriteMeal = MutableLiveData<Meal>()
+    val favoriteMeal: LiveData<Meal> get() = _favoriteMeal
 
     init {
 
@@ -134,6 +136,26 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     _message.value = "Error fetching favorites: ${e.message}"
                 }
                 Log.i("MealViewModel", "getFavorites: ${e.message}")
+            }
+        }
+    }
+
+    fun getFavoriteMealById(mealId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val meal = dao.getMealById(mealId.toInt())
+                withContext(Dispatchers.Main) {
+                    if (meal == null) {
+                        _message.postValue("No meal found")
+                    } else {
+                        _favoriteMeal.postValue(meal)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching meal: ${e.message}"
+                }
+                Log.i("MealViewModel", "getFavoriteMealById: ${e.message}")
             }
         }
     }

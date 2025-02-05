@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ScrollView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.foodplanner.R
 import com.example.foodplanner.viewModel.NetworkViewModel
 
@@ -16,7 +16,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var noInternetImage: ImageView
     private lateinit var mainContent: ScrollView
-    private val networkViewModel: NetworkViewModel by viewModels()
+    private lateinit var networkViewModel: NetworkViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +34,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi(view)
+        networkViewModel = ViewModelProvider(requireActivity())[NetworkViewModel::class.java]
         networkViewModel.checkInternetConnection()
         networkViewModel.isConnected.observe(viewLifecycleOwner, Observer { isConnected ->
             if (isConnected) {
