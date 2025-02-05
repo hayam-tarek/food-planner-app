@@ -6,19 +6,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.foodplanner.db.MealDataBase
-import com.example.foodplanner.network.ApiClient
-import com.example.foodplanner.viewModel.MealFactory
-import com.example.foodplanner.viewModel.MealViewModel
 import com.example.foodplanner.viewModel.NetworkViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
