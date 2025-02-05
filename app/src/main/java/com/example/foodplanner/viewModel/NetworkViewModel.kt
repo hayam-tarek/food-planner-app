@@ -11,6 +11,9 @@ class NetworkViewModel(application: Application) : AndroidViewModel(application)
     val isConnected: LiveData<Boolean>
         get() = _isConnected
 
+    init {
+        checkInternetConnection()
+    }
     fun checkInternetConnection() {
         _isConnected.postValue(NetworkUtil.isInternetAvailable(getApplication()))
     }

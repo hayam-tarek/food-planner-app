@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -23,7 +22,7 @@ import com.example.foodplanner.viewModel.NetworkViewModel
 class RandomMealCardFragment : Fragment() {
 
     private lateinit var mealViewModel: MealViewModel
-    private val networkViewModel: NetworkViewModel by viewModels()
+    private lateinit var networkViewModel: NetworkViewModel
     private lateinit var mealName: TextView
     private lateinit var mealCountry: TextView
     private lateinit var mealCategory: TextView
@@ -68,6 +67,7 @@ class RandomMealCardFragment : Fragment() {
         val mealDao = MealDataBase.getInstance(requireContext()).mealDao()
         val mealFactory = MealFactory(retrofit, mealDao)
         mealViewModel = ViewModelProvider(requireActivity(), mealFactory)[MealViewModel::class.java]
+        networkViewModel = ViewModelProvider(requireActivity())[NetworkViewModel::class.java]
     }
 
     private fun initUI(view: View) {

@@ -25,7 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var bottomNavigationView: BottomNavigationView
-    private val networkViewModel: NetworkViewModel by viewModels()
+    private lateinit var networkViewModel: NetworkViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        networkViewModel = ViewModelProvider(this)[NetworkViewModel::class.java]
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_refresh -> {
                 networkViewModel.checkInternetConnection()
-                Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Refreshing...🔃", Toast.LENGTH_SHORT).show()
                 true
             }
 
