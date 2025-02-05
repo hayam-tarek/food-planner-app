@@ -33,6 +33,9 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     private val _mealDetails = MutableLiveData<MealModel>()
     val mealDetails: LiveData<MealModel>
         get() = _mealDetails
+    private val _favorites = MutableLiveData<List<Meal>>()
+    val favorites: LiveData<List<Meal>>
+        get() = _favorites
 
     init {
 
@@ -90,6 +93,17 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                 _message.postValue("Meal deleted from the favorites")
             } catch (e: Exception) {
                 Log.i("MealViewModel", "deleteMealFromFav: ${e.message}")
+            }
+        }
+    }
+
+    fun getFavorites() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val meals = dao.getAll()
+                _favorites.postValue(meals)
+            } catch (e: Exception) {
+                Log.i("MealViewModel", "getFavorites: ${e.message}")
             }
         }
     }

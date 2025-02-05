@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@color/tertiary_color"
-        android:src="@drawable/baseline_favorite_24"
-        app:layout_anchor="@id/frameLayout"
-        app:layout_anchorGravity="top|right" />
+        android:src="@drawable/add_to_favorites"
+        app:layout_anchor="@id/mealDetailImage"
+        app:layout_anchorGravity="bottom|right" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -44,8 +44,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="16dp"
-                    android:orientation="horizontal"
-                    android:scrollbars="horizontal"
+                    android:orientation="vertical"
+                    android:scrollbars="vertical"
                     app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                     app:spanCount="4"
                     app:layout_constraintBottom_toBottomOf="parent"
