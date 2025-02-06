@@ -143,6 +143,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     if (result == -1L) {
                         _message.postValue("Meal already exists in the favorites")
                     } else {
+                        meal.isFavorite =true
                         _message.postValue("Meal added to the favorites")
                     }
                 }
@@ -160,6 +161,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
             try {
                 dao.delete(meal)
                 withContext(Dispatchers.Main) {
+                    meal.isFavorite = false
                     _message.postValue("Meal deleted from the favorites")
                 }
             } catch (e: Exception) {
@@ -180,6 +182,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                         _favorites.postValue(listOf())
                         _message.postValue("No favorites found")
                     } else {
+                        meals.forEach { it.isFavorite = true }
                         _favorites.postValue(meals)
                     }
                 }
@@ -200,6 +203,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     if (meal == null) {
                         _message.postValue("No meal found")
                     } else {
+                        meal.isFavorite = true
                         _favoriteMeal.postValue(meal)
                     }
                 }
@@ -219,10 +223,12 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                 withContext(Dispatchers.Main) {
                     if (existingMeal != null) {
                         dao.delete(meal)
+                        meal.isFavorite = false
                         _isFavorite.postValue(false)
                         _message.postValue("Meal removed from favorites")
                     } else {
                         dao.insert(meal)
+                        meal.isFavorite = true
                         _isFavorite.postValue(true)
                         _message.postValue("Meal added to favorites")
                     }

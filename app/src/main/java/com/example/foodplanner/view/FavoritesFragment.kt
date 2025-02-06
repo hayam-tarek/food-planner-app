@@ -54,6 +54,9 @@ class FavoritesFragment : Fragment(), MealListener {
             }
 
         }
+        mealViewModel.isFavorite.observe(viewLifecycleOwner) { isFav ->
+            mealsAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun onResume() {
@@ -85,6 +88,6 @@ class FavoritesFragment : Fragment(), MealListener {
     }
 
     override fun onMealFavClicked(meal: Meal) {
-        TODO("Not yet implemented")
+        mealViewModel.toggleFavorite(meal)
     }
 }

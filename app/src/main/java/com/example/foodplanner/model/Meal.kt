@@ -1,6 +1,7 @@
 package com.example.foodplanner.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 fun Meal.getIngredientsList(): List<String?> {
@@ -76,5 +77,9 @@ data class Meal(
     val strMeasure9: String?,
     val strSource: String?,
     val strTags: String?,
-    val strYoutube: String?
-)
+    val strYoutube: String?,
+) {
+    @Ignore
+    var isFavorite: Boolean = false
+
+}

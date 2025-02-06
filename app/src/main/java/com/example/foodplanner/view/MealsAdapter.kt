@@ -38,18 +38,30 @@ Adapter<MealsAdapter.MealsHolder>() {
 
 
     override fun onBindViewHolder(holder: MealsHolder, position: Int) {
-        holder.mealName.text = data[position].strMeal.toString()
+        val meal = data[position]
+        holder.mealName.text = meal.strMeal.toString()
         Glide.with(context)
-            .load(data[position].strMealThumb)
+            .load(meal.strMealThumb)
             .transform(RoundedCorners(25))
             .into(holder.mealImage)
 
+        updateFavoriteIcon(holder.mealFavIcon, meal.isFavorite)
+
         holder.row.setOnClickListener {
-            mealListener.onMealClicked(data[position])
+            mealListener.onMealClicked(meal)
         }
 
         holder.mealFavIcon.setOnClickListener {
-            mealListener.onMealFavClicked(data[position])
+            mealListener.onMealFavClicked(meal)
+            updateFavoriteIcon(holder.mealFavIcon, meal.isFavorite)
+        }
+    }
+
+    private fun updateFavoriteIcon(icon: ImageView, isFavorite: Boolean) {
+        if (isFavorite) {
+            icon.setImageResource(R.drawable.in_fav)
+        } else {
+            icon.setImageResource(R.drawable.out_fav)
         }
     }
 

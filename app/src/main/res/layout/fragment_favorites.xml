@@ -25,5 +25,5 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:src="@drawable/empty_heart"
-        android:visibility="visible" />
+        android:visibility="gone" />
 </FrameLayout>
