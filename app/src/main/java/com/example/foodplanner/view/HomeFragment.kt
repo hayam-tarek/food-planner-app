@@ -1,5 +1,6 @@
 package com.example.foodplanner.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodplanner.R
 import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.network.ApiClient
+import com.example.foodplanner.utils.AreaListener
+import com.example.foodplanner.utils.CategoryListener
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
 import com.example.foodplanner.viewModel.NetworkViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), CategoryListener, AreaListener {
 
     private lateinit var noInternetImage: ImageView
     private lateinit var mainContent: ScrollView
@@ -81,13 +84,25 @@ class HomeFragment : Fragment() {
         noInternetImage = view.findViewById(R.id.noInternetImage)
         mainContent = view.findViewById(R.id.mainContent)
         countriesList = view.findViewById(R.id.countriesList)
-        areasAdapter = AreasAdapter(requireActivity(), listOf())
+        areasAdapter = AreasAdapter(requireActivity(), listOf(),this)
         countriesList.adapter = areasAdapter
         countriesList.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         categoriesList = view.findViewById(R.id.categoriesList)
-        categoriesAdapter = CategoriesAdapter(requireActivity(), listOf())
+        categoriesAdapter = CategoriesAdapter(requireActivity(), listOf(),this)
         categoriesList.adapter = categoriesAdapter
         categoriesList.layoutManager = GridLayoutManager(requireActivity(), 3)
+    }
+
+    override fun onCategoryClicked(category: String) {
+        val intent = Intent(requireActivity(), FilteredMeals::class.java)
+        intent.putExtra("filterBy", arrayOf("c", category))
+        startActivity(intent)
+    }
+
+    override fun onAreaClicked(area: String) {
+        val intent = Intent(requireActivity(), FilteredMeals::class.java)
+        intent.putExtra("filterBy", arrayOf("a", area))
+        startActivity(intent)
     }
 }

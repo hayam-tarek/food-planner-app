@@ -51,6 +51,9 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     private val _categories = MutableLiveData<CategoryModel>()
     val categories: LiveData<CategoryModel> get() = _categories
 
+    private val _filteredMeals = MutableLiveData<MealModel>()
+    val filteredMeals: LiveData<MealModel> get() = _filteredMeals
+
     init {
         getFavorites()
     }
@@ -63,6 +66,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     if (meal.meals.isEmpty()) {
                         _message.postValue("No meal found")
                     } else {
+                        checkIfFavorite(meal.meals[0])
                         _randomMeal.postValue(meal)
                     }
                 }
@@ -83,6 +87,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     if (meal.meals.isEmpty()) {
                         _message.postValue("No meal found")
                     } else {
+                        checkIfFavorite(meal.meals[0])
                         _mealDetails.postValue(meal)
                     }
                 }
@@ -91,6 +96,48 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     _message.value = "Error fetching meal: ${e.message}"
                 }
                 Log.i("MealViewModel", "getMealDetails: ${e.message}")
+            }
+        }
+    }
+
+    fun getFilteredMealsByCategory(categoryName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val meal = retrofit.filterByCategory(categoryName)
+                withContext(Dispatchers.Main) {
+                    if (meal.meals.isEmpty()) {
+                        _message.postValue("No meals found")
+                    } else {
+                        meal.meals.forEach { checkIfFavorite(it) }
+                        _filteredMeals.postValue(meal)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching meals: ${e.message}"
+                }
+                Log.i("MealViewModel", "filterByCategory: ${e.message}")
+            }
+        }
+    }
+
+    fun getFilteredMealsByArea(areaName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val meal = retrofit.filterByArea(areaName)
+                withContext(Dispatchers.Main) {
+                    if (meal.meals.isEmpty()) {
+                        _message.postValue("No meals found")
+                    } else {
+                        meal.meals.forEach { checkIfFavorite(it) }
+                        _filteredMeals.postValue(meal)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching meals: ${e.message}"
+                }
+                Log.i("MealViewModel", "filterByArea: ${e.message}")
             }
         }
     }
@@ -143,7 +190,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     if (result == -1L) {
                         _message.postValue("Meal already exists in the favorites")
                     } else {
-                        meal.isFavorite =true
+                        meal.isFavorite = true
                         _message.postValue("Meal added to the favorites")
                     }
                 }
@@ -180,7 +227,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                 withContext(Dispatchers.Main) {
                     if (meals.isEmpty()) {
                         _favorites.postValue(listOf())
-                        _message.postValue("No favorites found")
+//                        _message.postValue("No favorites found")
                     } else {
                         meals.forEach { it.isFavorite = true }
                         _favorites.postValue(meals)
@@ -248,6 +295,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
             try {
                 val result = dao.getMealById(meal.idMeal.toInt())
                 withContext(Dispatchers.Main) {
+                    meal.isFavorite = result != null
                     _isFavorite.value = result != null
                 }
             } catch (e: Exception) {

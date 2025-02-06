@@ -43,6 +43,7 @@ Adapter<MealsAdapter.MealsHolder>() {
         Glide.with(context)
             .load(meal.strMealThumb)
             .transform(RoundedCorners(25))
+            .placeholder(R.drawable.loading)
             .into(holder.mealImage)
 
         updateFavoriteIcon(holder.mealFavIcon, meal.isFavorite)

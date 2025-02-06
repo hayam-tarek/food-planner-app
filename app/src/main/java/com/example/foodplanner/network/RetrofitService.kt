@@ -18,4 +18,10 @@ interface RetrofitService {
 
     @GET("categories.php")
     suspend fun categories(): CategoryModel
+
+    @GET("filter.php")
+    suspend fun filterByCategory(@Query("c") categoryName: String): MealModel
+
+    @GET("filter.php")
+    suspend fun filterByArea(@Query("a") areaName: String): MealModel
 }

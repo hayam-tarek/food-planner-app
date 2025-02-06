@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
 import com.example.foodplanner.model.Category
+import com.example.foodplanner.utils.CategoryListener
 
 class CategoriesAdapter(
     val context: Context,
     var data: List<Category>,
+    val listener: CategoryListener
 ) : RecyclerView.
 Adapter<CategoriesAdapter.CategoriesHolder>() {
     class CategoriesHolder(val row: View) : RecyclerView.ViewHolder(row) {
@@ -40,7 +42,7 @@ Adapter<CategoriesAdapter.CategoriesHolder>() {
         Glide.with(context).load(data[position].strCategoryThumb).transform(RoundedCorners(25))
             .into(holder.categoryImage)
         holder.row.setOnClickListener {
-//            Toast.makeText(context, data[position], Toast.LENGTH_SHORT).show()
+            listener.onCategoryClicked(data[position].strCategory)
         }
     }
 

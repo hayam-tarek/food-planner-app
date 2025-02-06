@@ -8,10 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodplanner.R
 import com.example.foodplanner.model.Area
+import com.example.foodplanner.utils.AreaListener
 
 class AreasAdapter(
     val context: Context,
     var data: List<Area>,
+    val listener: AreaListener
 ) : RecyclerView.
 Adapter<AreasAdapter.AreasHolder>() {
     class AreasHolder(val row: View) : RecyclerView.ViewHolder(row) {
@@ -33,7 +35,7 @@ Adapter<AreasAdapter.AreasHolder>() {
     override fun onBindViewHolder(holder: AreasHolder, position: Int) {
         holder.areaName.text = data[position].strArea
         holder.row.setOnClickListener {
-//            Toast.makeText(context, data[position], Toast.LENGTH_SHORT).show()
+            listener.onAreaClicked(data[position].strArea)
         }
     }
 
