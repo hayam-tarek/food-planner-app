@@ -18,7 +18,7 @@ class TextBoxFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_text_box, container, false)
+        return inflater.inflate(R.layout.fragment_ingredient_item, container, false)
     }
 
 }

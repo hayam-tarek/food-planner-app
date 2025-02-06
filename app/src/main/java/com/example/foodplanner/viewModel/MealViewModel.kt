@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.foodplanner.db.MealDao
+import com.example.foodplanner.model.AreaModel
 import com.example.foodplanner.model.Meal
 import com.example.foodplanner.model.MealModel
 import com.example.foodplanner.network.RetrofitService
@@ -42,6 +43,9 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
 
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> get() = _isFavorite
+
+    private val _areas = MutableLiveData<AreaModel>()
+    val areas: LiveData<AreaModel> get() = _areas
 
     init {
         getFavorites()
@@ -83,6 +87,26 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     _message.value = "Error fetching meal: ${e.message}"
                 }
                 Log.i("MealViewModel", "getMealDetails: ${e.message}")
+            }
+        }
+    }
+
+    fun getAreas() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val areas = retrofit.areas()
+                withContext(Dispatchers.Main) {
+                    if (areas.meals.isEmpty()) {
+                        _message.postValue("No areas found")
+                    } else {
+                        _areas.postValue(areas)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching areas: ${e.message}"
+                }
+                Log.i("MealViewModel", "getAreas: ${e.message}")
             }
         }
     }

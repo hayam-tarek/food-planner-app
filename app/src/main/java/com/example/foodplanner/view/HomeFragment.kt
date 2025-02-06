@@ -9,7 +9,13 @@ import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.foodplanner.R
+import com.example.foodplanner.db.MealDataBase
+import com.example.foodplanner.network.ApiClient
+import com.example.foodplanner.viewModel.MealFactory
+import com.example.foodplanner.viewModel.MealViewModel
 import com.example.foodplanner.viewModel.NetworkViewModel
 
 class HomeFragment : Fragment() {
@@ -17,6 +23,9 @@ class HomeFragment : Fragment() {
     private lateinit var noInternetImage: ImageView
     private lateinit var mainContent: ScrollView
     private lateinit var networkViewModel: NetworkViewModel
+    private lateinit var countriesList: RecyclerView
+    private lateinit var areasAdapter: AreasAdapter
+    private lateinit var mealViewModel: MealViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,21 +43,39 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi(view)
-        networkViewModel = ViewModelProvider(requireActivity())[NetworkViewModel::class.java]
+        setupViewModel()
         networkViewModel.checkInternetConnection()
         networkViewModel.isConnected.observe(viewLifecycleOwner, Observer { isConnected ->
             if (isConnected) {
                 noInternetImage.visibility = View.GONE
                 mainContent.visibility = View.VISIBLE
+                mealViewModel.getAreas()
             } else {
                 noInternetImage.visibility = View.VISIBLE
                 mainContent.visibility = View.GONE
             }
         })
+        mealViewModel.areas.observe(viewLifecycleOwner, Observer { areas ->
+            areasAdapter.data = areas.meals
+            areasAdapter.notifyDataSetChanged()
+        })
+    }
+
+    private fun setupViewModel() {
+        val retrofit = ApiClient.retrofitService
+        val mealDao = MealDataBase.getInstance(requireActivity()).mealDao()
+        val mealFactory = MealFactory(retrofit, mealDao)
+        mealViewModel = ViewModelProvider(requireActivity(), mealFactory)[MealViewModel::class.java]
+        networkViewModel = ViewModelProvider(requireActivity())[NetworkViewModel::class.java]
     }
 
     private fun initUi(view: View) {
         noInternetImage = view.findViewById(R.id.noInternetImage)
         mainContent = view.findViewById(R.id.mainContent)
+        countriesList = view.findViewById(R.id.countriesList)
+        areasAdapter = AreasAdapter(requireActivity(), listOf())
+        countriesList.adapter = areasAdapter
+        countriesList.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
     }
 }

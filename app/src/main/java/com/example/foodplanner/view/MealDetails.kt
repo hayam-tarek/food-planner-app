@@ -42,7 +42,7 @@ class MealDetails : AppCompatActivity() {
     private lateinit var mealVideo: WebView
     private lateinit var fabButton: FloatingActionButton
     private lateinit var ingredientsList: RecyclerView
-    private lateinit var itemsAdapter: ItemsAdapter
+    private lateinit var ingredientsAdapter: IngredientsAdapter
     private lateinit var recipeVideo: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,9 +117,9 @@ class MealDetails : AppCompatActivity() {
         mealCategory.text = meal.strCategory
         mealInstructions.text = meal.strInstructions
         toolbar.title = meal.strMeal
-        itemsAdapter.data = meal.getIngredientsList() as List<String>
-        itemsAdapter.subData = meal.getMeasuresList() as List<String>
-        itemsAdapter.notifyDataSetChanged()
+        ingredientsAdapter.data = meal.getIngredientsList() as List<String>
+        ingredientsAdapter.subData = meal.getMeasuresList() as List<String>
+        ingredientsAdapter.notifyDataSetChanged()
         loadYouTubeVideo(meal.strYoutube!!)
         runOnUiThread {
             Glide.with(this)
@@ -146,8 +146,8 @@ class MealDetails : AppCompatActivity() {
         fabButton = findViewById(R.id.fabButton)
         fabButton.imageTintList = null
         ingredientsList = findViewById(R.id.ingredientsList)
-        itemsAdapter = ItemsAdapter(this, listOf(), listOf())
-        ingredientsList.adapter = itemsAdapter
+        ingredientsAdapter = IngredientsAdapter(this, listOf(), listOf())
+        ingredientsList.adapter = ingredientsAdapter
         ingredientsList.layoutManager =
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
     }

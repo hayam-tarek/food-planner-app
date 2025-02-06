@@ -8,15 +8,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodplanner.R
 
-class ItemsAdapter(
+class IngredientsAdapter(
     val context: Context,
     var data: List<String>,
     var subData: List<String>
 ) : RecyclerView.
-Adapter<ItemsAdapter.ItemsHolder>() {
+Adapter<IngredientsAdapter.ItemsHolder>() {
     class ItemsHolder(val row: View) : RecyclerView.ViewHolder(row) {
-        val title: TextView = row.findViewById(R.id.textBoxTitle)
-        val subTitle: TextView = row.findViewById(R.id.textBoxSubTitle)
+        val title: TextView = row.findViewById(R.id.itemTitle)
+        val subTitle: TextView = row.findViewById(R.id.itemSubTitle)
     }
 
     override fun getItemCount(): Int {
@@ -25,7 +25,7 @@ Adapter<ItemsAdapter.ItemsHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsHolder {
         val layout =
-            LayoutInflater.from(parent.context).inflate(R.layout.fragment_text_box, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.fragment_ingredient_item, parent, false)
         val itemsHolder = ItemsHolder(layout)
         return itemsHolder
     }
