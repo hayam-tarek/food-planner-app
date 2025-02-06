@@ -1,6 +1,7 @@
 package com.example.foodplanner.network
 
 import com.example.foodplanner.model.AreaModel
+import com.example.foodplanner.model.CategoryModel
 import com.example.foodplanner.model.MealModel
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -14,4 +15,7 @@ interface RetrofitService {
 
     @GET("list.php?a=list")
     suspend fun areas(): AreaModel
+
+    @GET("categories.php")
+    suspend fun categories(): CategoryModel
 }

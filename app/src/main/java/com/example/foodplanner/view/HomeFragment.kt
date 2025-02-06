@@ -9,6 +9,7 @@ import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodplanner.R
@@ -26,6 +27,8 @@ class HomeFragment : Fragment() {
     private lateinit var countriesList: RecyclerView
     private lateinit var areasAdapter: AreasAdapter
     private lateinit var mealViewModel: MealViewModel
+    private lateinit var categoriesAdapter: CategoriesAdapter
+    private lateinit var categoriesList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,7 @@ class HomeFragment : Fragment() {
                 noInternetImage.visibility = View.GONE
                 mainContent.visibility = View.VISIBLE
                 mealViewModel.getAreas()
+                mealViewModel.getCategories()
             } else {
                 noInternetImage.visibility = View.VISIBLE
                 mainContent.visibility = View.GONE
@@ -58,6 +62,10 @@ class HomeFragment : Fragment() {
         mealViewModel.areas.observe(viewLifecycleOwner, Observer { areas ->
             areasAdapter.data = areas.meals
             areasAdapter.notifyDataSetChanged()
+        })
+        mealViewModel.categories.observe(viewLifecycleOwner, Observer { categories ->
+            categoriesAdapter.data = categories.categories
+            categoriesAdapter.notifyDataSetChanged()
         })
     }
 
@@ -77,5 +85,9 @@ class HomeFragment : Fragment() {
         countriesList.adapter = areasAdapter
         countriesList.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        categoriesList = view.findViewById(R.id.categoriesList)
+        categoriesAdapter = CategoriesAdapter(requireActivity(), listOf())
+        categoriesList.adapter = categoriesAdapter
+        categoriesList.layoutManager = GridLayoutManager(requireActivity(), 3)
     }
 }

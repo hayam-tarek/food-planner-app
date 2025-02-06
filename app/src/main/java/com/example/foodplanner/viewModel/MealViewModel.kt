@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.foodplanner.db.MealDao
 import com.example.foodplanner.model.AreaModel
+import com.example.foodplanner.model.CategoryModel
 import com.example.foodplanner.model.Meal
 import com.example.foodplanner.model.MealModel
 import com.example.foodplanner.network.RetrofitService
@@ -46,6 +47,9 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
 
     private val _areas = MutableLiveData<AreaModel>()
     val areas: LiveData<AreaModel> get() = _areas
+
+    private val _categories = MutableLiveData<CategoryModel>()
+    val categories: LiveData<CategoryModel> get() = _categories
 
     init {
         getFavorites()
@@ -107,6 +111,26 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     _message.value = "Error fetching areas: ${e.message}"
                 }
                 Log.i("MealViewModel", "getAreas: ${e.message}")
+            }
+        }
+    }
+
+    fun getCategories() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val categories = retrofit.categories()
+                withContext(Dispatchers.Main) {
+                    if (categories.categories.isEmpty()) {
+                        _message.postValue("No categories found")
+                    } else {
+                        _categories.postValue(categories)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching categories: ${e.message}"
+                }
+                Log.i("MealViewModel", "getCategories: ${e.message}")
             }
         }
     }
