@@ -142,6 +142,49 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
         }
     }
 
+    fun getFilteredMealsByIngredient(ingredientName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val meal = retrofit.filterByIngredient(ingredientName)
+                withContext(Dispatchers.Main) {
+                    if (meal.meals.isEmpty()) {
+                        _message.postValue("No meals found")
+                    } else {
+                        meal.meals.forEach { checkIfFavorite(it) }
+                        _filteredMeals.postValue(meal)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching meals: ${e.message}"
+                }
+                Log.i("MealViewModel", "filterByIngredient: ${e.message}")
+            }
+        }
+    }
+
+    fun searchMeal(query: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val meal = retrofit.searchMeal(query)
+                withContext(Dispatchers.Main) {
+                    if (meal.meals == null || meal.meals.isEmpty()) {
+                        _filteredMeals.value = meal
+                        _message.postValue("No meals found")
+                    } else {
+                        meal.meals.forEach { checkIfFavorite(it) }
+                        _filteredMeals.postValue(meal)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching meals: ${e.message}"
+                }
+                Log.i("MealViewModel", "filterByQuery: ${e.message}")
+            }
+        }
+    }
+
     fun getAreas() {
         viewModelScope.launch(Dispatchers.IO) {
             try {

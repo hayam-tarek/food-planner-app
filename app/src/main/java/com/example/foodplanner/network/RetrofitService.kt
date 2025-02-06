@@ -24,4 +24,10 @@ interface RetrofitService {
 
     @GET("filter.php")
     suspend fun filterByArea(@Query("a") areaName: String): MealModel
+
+    @GET("search.php")
+    suspend fun searchMeal(@Query("s") mealName: String): MealModel
+
+    @GET("filter.php")
+    suspend fun filterByIngredient(@Query("i") ingredient: String): MealModel
 }

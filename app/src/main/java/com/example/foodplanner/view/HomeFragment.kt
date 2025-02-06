@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ScrollView
 import androidx.fragment.app.Fragment
@@ -32,6 +33,8 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
     private lateinit var mealViewModel: MealViewModel
     private lateinit var categoriesAdapter: CategoriesAdapter
     private lateinit var categoriesList: RecyclerView
+    private lateinit var tapToSearch: ImageView
+    private lateinit var searchBar: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +73,16 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
             categoriesAdapter.data = categories.categories
             categoriesAdapter.notifyDataSetChanged()
         })
+        tapToSearch.setOnClickListener {
+            val query = searchBar.text.toString().trim()
+            if (query.isNotEmpty()) {
+                val intent = Intent(requireActivity(), FilteredMeals::class.java)
+                intent.putExtra("filterBy", arrayOf("s", query))
+                startActivity(intent)
+            } else {
+                searchBar.error = "Please enter a meal name"
+            }
+        }
     }
 
     private fun setupViewModel() {
@@ -84,12 +97,14 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
         noInternetImage = view.findViewById(R.id.noInternetImage)
         mainContent = view.findViewById(R.id.mainContent)
         countriesList = view.findViewById(R.id.countriesList)
-        areasAdapter = AreasAdapter(requireActivity(), listOf(),this)
+        areasAdapter = AreasAdapter(requireActivity(), listOf(), this)
+        searchBar = view.findViewById(R.id.searchBar)
+        tapToSearch = view.findViewById(R.id.tapToSearch)
         countriesList.adapter = areasAdapter
         countriesList.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         categoriesList = view.findViewById(R.id.categoriesList)
-        categoriesAdapter = CategoriesAdapter(requireActivity(), listOf(),this)
+        categoriesAdapter = CategoriesAdapter(requireActivity(), listOf(), this)
         categoriesList.adapter = categoriesAdapter
         categoriesList.layoutManager = GridLayoutManager(requireActivity(), 3)
     }

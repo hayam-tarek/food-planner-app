@@ -2,6 +2,9 @@ package com.example.foodplanner.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -23,6 +26,7 @@ class FilteredMeals : AppCompatActivity(), MealListener {
     private lateinit var mealViewModel: MealViewModel
     private lateinit var mealsAdapter: MealsAdapter
     private lateinit var mealsList: RecyclerView
+    private lateinit var nothingImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,18 +51,35 @@ class FilteredMeals : AppCompatActivity(), MealListener {
         if (filterBy == "a") {
             mealViewModel.getFilteredMealsByArea(type!!)
         }
+        if (filterBy == "i") {
+            mealViewModel.getFilteredMealsByIngredient(type!!)
+        }
+        if (filterBy == "s") {
+            mealViewModel.searchMeal(type!!)
+        }
         mealViewModel.filteredMeals.observe(this) { meal ->
-            mealsAdapter.data = meal.meals
-            mealsAdapter.notifyDataSetChanged()
+            if (meal.meals.isNullOrEmpty()) {
+                mealsList.visibility = View.GONE
+                nothingImage.visibility = View.VISIBLE
+            } else {
+                mealsAdapter.data = meal.meals
+                mealsAdapter.notifyDataSetChanged()
+                mealsList.visibility = View.VISIBLE
+                nothingImage.visibility = View.GONE
+            }
         }
         mealViewModel.isFavorite.observe(this) { isFav ->
             mealsAdapter.notifyDataSetChanged()
+        }
+        mealViewModel.message.observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun initUI() {
         toolbar = findViewById(R.id.toolbar2)
         mealsList = findViewById(R.id.mealsList)
+        nothingImage = findViewById(R.id.nothingImage)
         mealsAdapter = MealsAdapter(this, listOf(), this)
         mealsList.adapter = mealsAdapter
         mealsList.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
