@@ -52,10 +52,9 @@ class MealDetails : AppCompatActivity() {
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private lateinit var recipeVideo: TextView
     private lateinit var addToPlanBtn: Button
-    private lateinit var weeklyMeal: WeeklyMealViewModel
+    private lateinit var weeklyMealViewModel: WeeklyMealViewModel
     private val daysOfWeek =
         listOf("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,17 +79,8 @@ class MealDetails : AppCompatActivity() {
             }
         }
 
-        mealViewModel.mealDetails.observe(this) { meal ->
-            meal.meals[0].let {
-                updateUi(it)
-                mealViewModel.checkIfFavorite(it)
-                fabButton.setOnClickListener {
-                    mealViewModel.toggleFavorite(meal.meals[0])
-                }
-                addToPlanBtn.setOnClickListener {
-                    showDayPickerDialog(meal.meals[0])
-                }
-            }
+        mealViewModel.mealDetails.observe(this) {
+            setupMealObservers(it.meals[0])
         }
         mealViewModel.isFavorite.observe(this) { isFavorite ->
             updateFavoriteIcon(isFavorite)
@@ -99,20 +89,25 @@ class MealDetails : AppCompatActivity() {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
         mealViewModel.favoriteMeal.observe(this) {
-            val meal = it
-            updateUi(it)
-            mealViewModel.checkIfFavorite(it)
-            fabButton.setOnClickListener {
-                mealViewModel.toggleFavorite(meal)
-            }
-            addToPlanBtn.setOnClickListener {
-                showDayPickerDialog(meal)
-            }
+            setupMealObservers(it)
         }
-        weeklyMeal.message.observe(this) {
+        weeklyMealViewModel.message.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    private fun setupMealObservers(meal: Meal) {
+        updateUi(meal)
+        mealViewModel.checkIfFavorite(meal)
+
+        fabButton.setOnClickListener {
+            mealViewModel.toggleFavorite(meal)
+        }
+
+        addToPlanBtn.setOnClickListener {
+            showDayPickerDialog(meal)
+        }
     }
 
     private fun showDayPickerDialog(meal: Meal) {
@@ -129,7 +124,7 @@ class MealDetails : AppCompatActivity() {
 //                selectedDay = text.toString()
                 if (selectedDayIndex != -1) {
                     selectedDay = daysOfWeek[selectedDayIndex]
-                    weeklyMeal.insertMeal(meal, selectedDay)
+                    weeklyMealViewModel.insertMeal(meal, selectedDay)
                 } else {
                     Toast.makeText(this@MealDetails, "Please select a day", Toast.LENGTH_SHORT)
                         .show()
@@ -208,7 +203,8 @@ class MealDetails : AppCompatActivity() {
         networkViewModel = ViewModelProvider(this)[NetworkViewModel::class.java]
         val weeklyMealDao = WeeklyMealDataBase.getInstance(this).weeklyMealDao()
         val weeklyMealFactory = WeeklyMealFactory(weeklyMealDao)
-        weeklyMeal = ViewModelProvider(this, weeklyMealFactory)[WeeklyMealViewModel::class.java]
+        weeklyMealViewModel =
+            ViewModelProvider(this, weeklyMealFactory)[WeeklyMealViewModel::class.java]
     }
 
     @SuppressLint("SetJavaScriptEnabled")
