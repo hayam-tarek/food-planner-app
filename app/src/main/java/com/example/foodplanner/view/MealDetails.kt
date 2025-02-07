@@ -20,11 +20,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
-import com.afollestad.materialdialogs.list.listItems
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
 import com.example.foodplanner.db.MealDataBase
+import com.example.foodplanner.db.WeeklyMealDataBase
 import com.example.foodplanner.model.Meal
 import com.example.foodplanner.model.getIngredientsList
 import com.example.foodplanner.model.getMeasuresList
@@ -32,6 +33,8 @@ import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
 import com.example.foodplanner.viewModel.NetworkViewModel
+import com.example.foodplanner.viewModel.WeeklyMealFactory
+import com.example.foodplanner.viewModel.WeeklyMealViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MealDetails : AppCompatActivity() {
@@ -49,7 +52,7 @@ class MealDetails : AppCompatActivity() {
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private lateinit var recipeVideo: TextView
     private lateinit var addToPlanBtn: Button
-    private var selectedDay: String? = null
+    private lateinit var weeklyMeal: WeeklyMealViewModel
     private val daysOfWeek =
         listOf("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 
@@ -84,6 +87,9 @@ class MealDetails : AppCompatActivity() {
                 fabButton.setOnClickListener {
                     mealViewModel.toggleFavorite(meal.meals[0])
                 }
+                addToPlanBtn.setOnClickListener {
+                    showDayPickerDialog(meal.meals[0])
+                }
             }
         }
         mealViewModel.isFavorite.observe(this) { isFavorite ->
@@ -99,27 +105,39 @@ class MealDetails : AppCompatActivity() {
             fabButton.setOnClickListener {
                 mealViewModel.toggleFavorite(meal)
             }
+            addToPlanBtn.setOnClickListener {
+                showDayPickerDialog(meal)
+            }
         }
-        addToPlanBtn.setOnClickListener {
-            showDayPickerDialog()
+        weeklyMeal.message.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
+
     }
 
-    private fun showDayPickerDialog() {
+    private fun showDayPickerDialog(meal: Meal) {
+        var selectedDayIndex = -1
+        var selectedDay: String = ""
         MaterialDialog(this, BottomSheet()).show {
             cornerRadius(25f)
             title(text = "Select a Day 📌")
-            listItems(items = daysOfWeek) { _, index, text ->
-                selectedDay = text.toString()
-            }
-
-            positiveButton(text = "✅ Confirm") {
-                if (selectedDay != null) {
-//                    selectedDayText.text = "Selected: $selectedDay"
+            var result = listItemsSingleChoice(
+                items = daysOfWeek,
+                initialSelection = -1
+            ) { _, index, text ->
+                selectedDayIndex = index
+//                selectedDay = text.toString()
+                if (selectedDayIndex != -1) {
+                    selectedDay = daysOfWeek[selectedDayIndex]
+                    weeklyMeal.insertMeal(meal, selectedDay)
                 } else {
                     Toast.makeText(this@MealDetails, "Please select a day", Toast.LENGTH_SHORT)
                         .show()
                 }
+            }
+
+            positiveButton(text = "✅ Confirm") {
+
             }
 
             negativeButton(text = "❌ Cancel") {
@@ -149,7 +167,7 @@ class MealDetails : AppCompatActivity() {
         ingredientsAdapter.data = meal.getIngredientsList() as List<String>
         ingredientsAdapter.subData = meal.getMeasuresList() as List<String>
         ingredientsAdapter.notifyDataSetChanged()
-        loadYouTubeVideo(meal.strYoutube!!)
+        if (meal.strYoutube != null) loadYouTubeVideo(meal.strYoutube)
         runOnUiThread {
             Glide.with(this)
                 .load(meal.strMealThumb)
@@ -188,6 +206,9 @@ class MealDetails : AppCompatActivity() {
         val mealFactory = MealFactory(retrofit, mealDao)
         mealViewModel = ViewModelProvider(this, mealFactory)[MealViewModel::class.java]
         networkViewModel = ViewModelProvider(this)[NetworkViewModel::class.java]
+        val weeklyMealDao = WeeklyMealDataBase.getInstance(this).weeklyMealDao()
+        val weeklyMealFactory = WeeklyMealFactory(weeklyMealDao)
+        weeklyMeal = ViewModelProvider(this, weeklyMealFactory)[WeeklyMealViewModel::class.java]
     }
 
     @SuppressLint("SetJavaScriptEnabled")
