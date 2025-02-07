@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/homeFragment"
-        android:icon="@drawable/baseline_home_24"
-        android:title="Home"
-        app:showAsAction="ifRoom"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/favoritesFragment"
-        android:icon="@drawable/baseline_favorite_24"
+        android:icon="@drawable/favorite_selector"
         android:title="Favorites"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/home_selector"
+        android:title="Home"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/planMealsFragment"
-        android:icon="@drawable/baseline_menu_book_24"
+        android:icon="@drawable/plan_selector"
         android:title="Plan Meals"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 </menu>

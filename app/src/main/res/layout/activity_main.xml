@@ -54,6 +54,7 @@
         android:background="?attr/colorSecondary"
         app:itemIconTint="?attr/colorPrimary"
         app:itemTextColor="?attr/colorPrimary"
+        app:labelVisibilityMode="selected"
         app:menu="@menu/bottom_nav_menu" />
 
     <androidx.fragment.app.FragmentContainerView
