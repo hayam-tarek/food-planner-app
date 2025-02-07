@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -61,8 +62,10 @@ Adapter<MealsAdapter.MealsHolder>() {
     private fun updateFavoriteIcon(icon: ImageView, isFavorite: Boolean) {
         if (isFavorite) {
             icon.setImageResource(R.drawable.in_fav)
+            icon.setColorFilter(ContextCompat.getColor(icon.context, android.R.color.holo_red_dark))
         } else {
             icon.setImageResource(R.drawable.out_fav)
+            icon.setColorFilter(ContextCompat.getColor(icon.context, android.R.color.darker_gray))
         }
     }
 

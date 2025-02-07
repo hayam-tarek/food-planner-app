@@ -94,20 +94,12 @@ class MealDetails : AppCompatActivity() {
     }
 
     private fun updateFavoriteIcon(isFavorite: Boolean) {
+        val icon = if (isFavorite) R.drawable.in_fav else R.drawable.out_fav
+        fabButton.setImageDrawable(ContextCompat.getDrawable(this, icon))
         if (isFavorite) {
-            fabButton.setImageDrawable(
-                ContextCompat.getDrawable(
-                    this,
-                    R.drawable.in_fav
-                )
-            )
+            fabButton.drawable.setTint(ContextCompat.getColor(this, android.R.color.holo_red_dark))
         } else {
-            fabButton.setImageDrawable(
-                ContextCompat.getDrawable(
-                    this,
-                    R.drawable.out_fav
-                )
-            )
+            fabButton.drawable.setTint(ContextCompat.getColor(this, android.R.color.darker_gray))
         }
     }
 

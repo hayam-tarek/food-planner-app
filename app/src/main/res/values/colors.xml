@@ -6,7 +6,11 @@
     <color name="primary_variant">#8C9F00</color>
     <color name="secondary_color">#FFF8EE</color>
     <color name="tertiary_color">#FFE2E2</color>
-    <color name="background_color">#FFFFFF</color>
-    <color name="text_color">#000000</color>
+    <color name="secondary_color_night">#CBB6A7</color>
+    <color name="tertiary_color_night">#DDA6A6</color>
     <color name="red">#FF0000</color>
+    <color name="background_light">#FAF3E0</color>
+    <color name="background_night">#2A2B1E</color>
+    <!--    <color name="background_night">#3B2F2F</color>-->
+    <!--        <color name="background_day">#F3EACB</color>-->
 </resources>

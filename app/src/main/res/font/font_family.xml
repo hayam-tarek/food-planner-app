@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
+<!--    <font-->
+<!--        app:font="@font/baskervville"-->
+<!--        app:fontStyle="normal"-->
+<!--        app:fontWeight="400" />-->
+<!--    <font-->
+<!--        app:font="@font/baskervville"-->
+<!--        app:fontStyle="italic"-->
+<!--        app:fontWeight="400" />-->
+
+<!--    <font-->
+<!--        app:font="@font/baskervville"-->
+<!--        app:fontStyle="normal"-->
+<!--        app:fontWeight="700" />-->
+
+<!--    <font-->
+<!--        app:font="@font/baskervville"-->
+<!--        app:fontStyle="italic"-->
+<!--        app:fontWeight="700" />-->
+
+    <font
+        app:font="@font/andikaregular"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
+
+    <font
+        app:font="@font/andikabold"
+        app:fontStyle="normal"
+        app:fontWeight="700" />
+
+    <font
+        app:font="@font/andikaitalic"
+        app:fontStyle="italic"
+        app:fontWeight="400" />
+
+    <font
+        app:font="@font/andikabolditalic"
+        app:fontStyle="italic"
+        app:fontWeight="700" />
+</font-family>

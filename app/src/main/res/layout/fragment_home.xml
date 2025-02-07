@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_background_selector"
                 android:drawableStart="@drawable/baseline_search_24"
-                android:drawableTint="@color/tertiary_color"
+                android:drawableTint="?attr/colorTertiary"
                 android:ems="10"
                 android:hint="Search recipe by name..."
                 android:inputType="text"

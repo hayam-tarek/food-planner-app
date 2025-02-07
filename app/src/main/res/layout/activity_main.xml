@@ -52,8 +52,8 @@
         android:layout_height="80dp"
         android:layout_gravity="bottom"
         android:background="?attr/colorSecondary"
-        app:itemIconTint="@color/primary_color"
-        app:itemTextColor="@color/primary_color"
+        app:itemIconTint="?attr/colorPrimary"
+        app:itemTextColor="?attr/colorPrimary"
         app:menu="@menu/bottom_nav_menu" />
 
     <androidx.fragment.app.FragmentContainerView
@@ -63,8 +63,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="80dp"
-        app:defaultNavHost="true"
         android:fitsSystemWindows="true"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:navGraph="@navigation/main_nav_graph" />
 

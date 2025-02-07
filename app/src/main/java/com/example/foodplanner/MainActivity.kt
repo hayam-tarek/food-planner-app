@@ -2,6 +2,7 @@ package com.example.foodplanner
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -37,7 +38,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        val color = resources.getColor(R.color.tertiary_color, theme)
+//        val color = resources.getColor(R.color.tertiary_color, theme)
+        val typedValue = TypedValue()
+        theme.resolveAttribute(com.google.android.material.R.attr.colorTertiary, typedValue, true)
+        val color = typedValue.data
         bottomNavigationView.itemActiveIndicatorColor = ColorStateList.valueOf(color)
 
         val navHostFragment =
