@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -17,6 +18,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.list.listItems
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
@@ -44,6 +48,11 @@ class MealDetails : AppCompatActivity() {
     private lateinit var ingredientsList: RecyclerView
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private lateinit var recipeVideo: TextView
+    private lateinit var addToPlanBtn: Button
+    private var selectedDay: String? = null
+    private val daysOfWeek =
+        listOf("Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +100,35 @@ class MealDetails : AppCompatActivity() {
                 mealViewModel.toggleFavorite(meal)
             }
         }
+        addToPlanBtn.setOnClickListener {
+            showDayPickerDialog()
+        }
     }
+
+    private fun showDayPickerDialog() {
+        MaterialDialog(this, BottomSheet()).show {
+            cornerRadius(25f)
+            title(text = "Select a Day 📌")
+            listItems(items = daysOfWeek) { _, index, text ->
+                selectedDay = text.toString()
+            }
+
+            positiveButton(text = "✅ Confirm") {
+                if (selectedDay != null) {
+//                    selectedDayText.text = "Selected: $selectedDay"
+                } else {
+                    Toast.makeText(this@MealDetails, "Please select a day", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            negativeButton(text = "❌ Cancel") {
+                dismiss()
+            }
+        }
+
+    }
+
 
     private fun updateFavoriteIcon(isFavorite: Boolean) {
         val icon = if (isFavorite) R.drawable.in_fav else R.drawable.out_fav
@@ -136,6 +173,7 @@ class MealDetails : AppCompatActivity() {
         mealVideo = findViewById(R.id.mealDetailVideo)
         recipeVideo = findViewById(R.id.recipeVideo)
         fabButton = findViewById(R.id.fabButton)
+        addToPlanBtn = findViewById(R.id.addToPlanBtn)
         fabButton.imageTintList = null
         ingredientsList = findViewById(R.id.ingredientsList)
         ingredientsAdapter = IngredientsAdapter(this, listOf(), listOf())

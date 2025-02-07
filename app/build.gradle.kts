@@ -61,4 +61,6 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.5.3") // for Navigation component with UI
     // implementation("com.google.android.material:material:1.6.1")// Material Design
     //implementationlementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
+    implementation("com.afollestad.material-dialogs:core:3.3.0")
+    implementation("com.afollestad.material-dialogs:bottomsheets:3.3.0")
 }
