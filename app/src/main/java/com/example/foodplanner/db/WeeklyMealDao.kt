@@ -21,4 +21,7 @@ interface WeeklyMealDao {
 
     @Delete
     suspend fun deleteMeal(meal: WeeklyMeal)
+
+    @Query("DELETE FROM weekly_meals")
+    suspend fun deleteAllMeals()
 }

@@ -12,6 +12,7 @@ import com.example.foodplanner.model.WeeklyMeal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 class WeeklyMealFactory(private val dao: WeeklyMealDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -33,6 +34,7 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
     val mealOfDay: LiveData<WeeklyMeal> get() = _mealOfDay
 
     init {
+        checkAndResetWeeklyMeals()
         getWeeklyMeals()
     }
 
@@ -133,6 +135,29 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                     _message.value = "Error: ${e.message}"
                 }
                 Log.i("WeeklyMealViewModel", "getMealByDay: ${e.message}")
+            }
+        }
+    }
+
+    fun checkAndResetWeeklyMeals() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val calendar = Calendar.getInstance()
+            val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
+            val minute = calendar.get(Calendar.MINUTE)
+            val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+            if (dayOfWeek == Calendar.SATURDAY && hourOfDay == 23 && minute == 59) {
+                try {
+                    dao.deleteAllMeals()
+                    withContext(Dispatchers.Main) {
+                        _weeklyMeals.value = listOf()
+//                        _message.value = "Weekly plan has been reset."
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        _message.value = "Error: ${e.message}"
+                    }
+                    Log.i("WeeklyMealViewModel", "checkAndResetWeeklyMeals: ${e.message}")
+                }
             }
         }
     }
