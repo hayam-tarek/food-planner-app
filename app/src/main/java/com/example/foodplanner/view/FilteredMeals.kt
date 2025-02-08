@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.airbnb.lottie.LottieAnimationView
 import com.example.foodplanner.R
 import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.model.Meal
@@ -27,6 +28,7 @@ class FilteredMeals : AppCompatActivity(), MealListener {
     private lateinit var mealsAdapter: MealsAdapter
     private lateinit var mealsList: RecyclerView
     private lateinit var nothingImage: ImageView
+    private lateinit var searchAnimation: LottieAnimationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,12 +62,14 @@ class FilteredMeals : AppCompatActivity(), MealListener {
         mealViewModel.filteredMeals.observe(this) { meal ->
             if (meal.meals.isNullOrEmpty()) {
                 mealsList.visibility = View.GONE
-                nothingImage.visibility = View.VISIBLE
+//                nothingImage.visibility = View.VISIBLE
+                searchAnimation.visibility = View.VISIBLE
             } else {
                 mealsAdapter.data = meal.meals
                 mealsAdapter.notifyDataSetChanged()
                 mealsList.visibility = View.VISIBLE
-                nothingImage.visibility = View.GONE
+//                nothingImage.visibility = View.GONE
+                searchAnimation.visibility = View.GONE
             }
         }
         mealViewModel.isFavorite.observe(this) { isFav ->
@@ -83,6 +87,7 @@ class FilteredMeals : AppCompatActivity(), MealListener {
         mealsAdapter = MealsAdapter(this, listOf(), this)
         mealsList.adapter = mealsAdapter
         mealsList.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        searchAnimation = findViewById(R.id.searchAnimationView)
 
     }
 

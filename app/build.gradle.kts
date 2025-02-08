@@ -63,4 +63,5 @@ dependencies {
     //implementationlementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
     implementation("com.afollestad.material-dialogs:core:3.3.0")
     implementation("com.afollestad.material-dialogs:bottomsheets:3.3.0")
+    implementation("com.airbnb.android:lottie:5.0.3")
 }
