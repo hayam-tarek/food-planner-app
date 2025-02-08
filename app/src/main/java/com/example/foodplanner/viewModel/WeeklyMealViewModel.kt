@@ -95,6 +95,7 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                 if (existingMeal == null) {
                     val weeklyMeal = WeeklyMeal(
                         mealName = meal.strMeal!!,
+                        mealCategory = meal.strCategory!!,
                         mealId = meal.idMeal,
                         dayOfWeek = day,
                         dayShort = day.substring(0, 3),

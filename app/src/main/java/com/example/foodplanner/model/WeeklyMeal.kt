@@ -8,6 +8,7 @@ data class WeeklyMeal(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val mealId: String,
     val mealName: String,
+    val mealCategory: String,
     val dayOfWeek: String,
     val dayShort: String,
     val imageUrl: String? = null

@@ -42,7 +42,7 @@ Adapter<WeeklyMealsAdapter.WeeklyMealsHolder>() {
     override fun onBindViewHolder(holder: WeeklyMealsHolder, position: Int) {
         holder.dayName.text = data[position].dayShort
         holder.weeklyMealName.text = data[position].mealName
-        holder.weeklyMealType.text = "Dinner"
+        holder.weeklyMealType.text = data[position].mealCategory
         holder.row.setOnClickListener {
             listener.onWeeklyMealClicked(data[position].mealId)
         }
