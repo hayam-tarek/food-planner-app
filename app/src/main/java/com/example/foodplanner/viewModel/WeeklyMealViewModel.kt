@@ -45,7 +45,19 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                         _weeklyMeals.value = listOf()
 //                        _message.value = "No weekly meals found"
                     } else {
-                        _weeklyMeals.value = meals
+                        val sortedMeals = meals.sortedWith(compareBy {
+                            when (it.dayShort) {
+                                "Sun" -> 0
+                                "Mon" -> 1
+                                "Tue" -> 2
+                                "Wed" -> 3
+                                "Thu" -> 4
+                                "Fri" -> 5
+                                "Sat" -> 6
+                                else -> 7
+                            }
+                        })
+                        _weeklyMeals.value = sortedMeals
                     }
                 }
             } catch (e: Exception) {
