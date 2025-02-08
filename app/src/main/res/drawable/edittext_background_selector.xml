@@ -1,14 +1,14 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_focused="true">
         <shape>
-            <stroke android:width="2dp" android:color="?attr/colorPrimary" /> <!-- لون البوردر عند التركيز -->
+            <stroke android:width="2dp" android:color="?attr/colorPrimary" />
             <corners android:radius="25dp" />
         </shape>
     </item>
 
     <item>
         <shape>
-            <stroke android:width="2dp" android:color="?attr/colorTertiary" /> <!-- لون البوردر العادي -->
+            <stroke android:width="2dp" android:color="?attr/colorTertiary" />
             <corners android:radius="20dp" />
         </shape>
     </item>

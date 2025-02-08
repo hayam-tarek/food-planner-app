@@ -36,14 +36,14 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
         getWeeklyMeals()
     }
 
-    private fun getWeeklyMeals() {
+    fun getWeeklyMeals() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val meals = dao.getAllMeals()
                 withContext(Dispatchers.Main) {
                     if (meals.isEmpty()) {
                         _weeklyMeals.value = listOf()
-                        _message.value = "No weekly meals found"
+//                        _message.value = "No weekly meals found"
                     } else {
                         _weeklyMeals.value = meals
                     }
@@ -64,6 +64,7 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                 withContext(Dispatchers.Main) {
                     _message.value = "Meal deleted successfully"
                 }
+                getWeeklyMeals()
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _message.value = "Error: ${e.message}"
@@ -77,7 +78,7 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val existingMeal = dao.getMealByDay(day)
-                if(existingMeal == null) {
+                if (existingMeal == null) {
                     val weeklyMeal = WeeklyMeal(
                         mealName = meal.strMeal!!,
                         mealId = meal.idMeal,
@@ -89,9 +90,9 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                     withContext(Dispatchers.Main) {
                         _message.value = "Meal added successfully"
                     }
-                }else{
+                } else {
                     withContext(Dispatchers.Main) {
-                        _message.value = "Meal already added for $day"
+                        _message.value = "A meal already added for $day ⚠"
                     }
                 }
 
