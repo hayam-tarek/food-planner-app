@@ -18,6 +18,9 @@ import com.example.foodplanner.model.WeeklyMeal
 import com.example.foodplanner.utils.WeeklyMealListener
 import com.example.foodplanner.viewModel.WeeklyMealFactory
 import com.example.foodplanner.viewModel.WeeklyMealViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 
 class PlanMealsFragment : Fragment(), WeeklyMealListener {
@@ -26,6 +29,7 @@ class PlanMealsFragment : Fragment(), WeeklyMealListener {
     private lateinit var weeklyMealViewModel: WeeklyMealViewModel
     private lateinit var noPlanImage: ImageView
     private lateinit var noPlanTxt: TextView
+    private lateinit var thisWeeksPlan: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +74,12 @@ class PlanMealsFragment : Fragment(), WeeklyMealListener {
         weeklyMealsList.adapter = weeklyMealsAdapter
         weeklyMealsList.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        thisWeeksPlan = view.findViewById(R.id.thisWeeksPlan)
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+        val startOfWeek = calendar.time
+        thisWeeksPlan.text = "Week of ${dateFormat.format(startOfWeek)}"
     }
 
     private fun setUpViewModel() {
