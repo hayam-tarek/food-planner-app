@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +24,8 @@ class PlanMealsFragment : Fragment(), WeeklyMealListener {
     private lateinit var weeklyMealsList: RecyclerView
     private lateinit var weeklyMealsAdapter: WeeklyMealsAdapter
     private lateinit var weeklyMealViewModel: WeeklyMealViewModel
+    private lateinit var noPlanImage: ImageView
+    private lateinit var noPlanTxt: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,29 +41,38 @@ class PlanMealsFragment : Fragment(), WeeklyMealListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init(view)
+        initUi(view)
         setUpViewModel()
         weeklyMealViewModel.getWeeklyMeals()
         weeklyMealViewModel.weeklyMeals.observe(viewLifecycleOwner) {
-//            if (it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
+                noPlanImage.visibility = View.GONE
+                noPlanTxt.visibility = View.GONE
+                weeklyMealsList.visibility = View.VISIBLE
                 weeklyMealsAdapter.data = it
                 weeklyMealsAdapter.notifyDataSetChanged()
-//            }
+            } else {
+                noPlanImage.visibility = View.VISIBLE
+                noPlanTxt.visibility = View.VISIBLE
+                weeklyMealsList.visibility = View.GONE
+            }
         }
         weeklyMealViewModel.message.observe(viewLifecycleOwner) {
             Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun init(view: View) {
+    private fun initUi(view: View) {
         weeklyMealsList = view.findViewById(R.id.weeklyMealsList)
         weeklyMealsAdapter = WeeklyMealsAdapter(requireActivity(), listOf(), this)
+        noPlanImage = view.findViewById(R.id.noPlanImage)
+        noPlanTxt = view.findViewById(R.id.noPlanTxt)
         weeklyMealsList.adapter = weeklyMealsAdapter
         weeklyMealsList.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
     }
 
-    fun setUpViewModel() {
+    private fun setUpViewModel() {
         val dao = WeeklyMealDataBase.getInstance(requireActivity()).weeklyMealDao()
         val factory = WeeklyMealFactory(dao)
         weeklyMealViewModel =

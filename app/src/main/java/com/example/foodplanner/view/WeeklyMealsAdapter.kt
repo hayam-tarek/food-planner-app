@@ -22,7 +22,7 @@ Adapter<WeeklyMealsAdapter.WeeklyMealsHolder>() {
         val weeklyMealName: TextView = row.findViewById(R.id.weeklyMealName)
         val weeklyMealType: TextView = row.findViewById(R.id.weeklyMealType)
 
-        //        val moreIcon: ImageView = row.findViewById(R.id.moreIcon)
+        //val moreIcon: ImageView = row.findViewById(R.id.moreIcon)
         val deleteIcon: ImageView = row.findViewById(R.id.deleteIcon)
     }
 
@@ -42,6 +42,7 @@ Adapter<WeeklyMealsAdapter.WeeklyMealsHolder>() {
     override fun onBindViewHolder(holder: WeeklyMealsHolder, position: Int) {
         holder.dayName.text = data[position].dayShort
         holder.weeklyMealName.text = data[position].mealName
+        holder.weeklyMealType.text = "Dinner"
         holder.row.setOnClickListener {
             listener.onWeeklyMealClicked(data[position].mealId)
         }

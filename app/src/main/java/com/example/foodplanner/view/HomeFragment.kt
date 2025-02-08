@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ScrollView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +36,7 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
     private lateinit var categoriesList: RecyclerView
     private lateinit var tapToSearch: ImageView
     private lateinit var searchBar: EditText
+    private lateinit var noInternetTxt: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +59,14 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
         networkViewModel.isConnected.observe(viewLifecycleOwner, Observer { isConnected ->
             if (isConnected) {
                 noInternetImage.visibility = View.GONE
+                noInternetTxt.visibility = View.GONE
                 mainContent.visibility = View.VISIBLE
                 mealViewModel.getAreas()
                 mealViewModel.getCategories()
             } else {
                 noInternetImage.visibility = View.VISIBLE
                 mainContent.visibility = View.GONE
+                noInternetTxt.visibility = View.VISIBLE
             }
         })
         mealViewModel.areas.observe(viewLifecycleOwner, Observer { areas ->
@@ -100,6 +104,7 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
         areasAdapter = AreasAdapter(requireActivity(), listOf(), this)
         searchBar = view.findViewById(R.id.searchBar)
         tapToSearch = view.findViewById(R.id.tapToSearch)
+        noInternetTxt = view.findViewById(R.id.noInternetText)
         countriesList.adapter = areasAdapter
         countriesList.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)

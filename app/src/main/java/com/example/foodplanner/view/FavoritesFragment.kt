@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ class FavoritesFragment : Fragment(), MealListener {
     private lateinit var mealViewModel: MealViewModel
     private lateinit var mealsAdapter: MealsAdapter
     private lateinit var noFavsImage: ImageView
+    private lateinit var noFavsText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +48,12 @@ class FavoritesFragment : Fragment(), MealListener {
             if (meals.isNotEmpty()) {
                 favoritesRecyclerView.visibility = View.VISIBLE
                 noFavsImage.visibility = View.GONE
+                noFavsText.visibility = View.GONE
                 mealsAdapter.data = meals
                 mealsAdapter.notifyDataSetChanged()
             } else {
                 favoritesRecyclerView.visibility = View.GONE
+                noFavsText.visibility = View.VISIBLE
                 noFavsImage.visibility = View.VISIBLE
             }
 
@@ -67,6 +71,7 @@ class FavoritesFragment : Fragment(), MealListener {
     private fun initUI(view: View) {
         favoritesRecyclerView = view.findViewById(R.id.favoritesRecyclerView)
         noFavsImage = view.findViewById(R.id.noFavsImage)
+        noFavsText = view.findViewById(R.id.noFavsText)
         mealsAdapter = MealsAdapter(requireContext(), listOf(), this)
         favoritesRecyclerView.adapter = mealsAdapter
         favoritesRecyclerView.layoutManager =
