@@ -62,7 +62,7 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
             try {
                 dao.deleteMeal(weeklyMeal)
                 withContext(Dispatchers.Main) {
-                    _message.value = "Meal deleted successfully"
+//                    _message.value = "Meal deleted successfully"
                 }
                 getWeeklyMeals()
             } catch (e: Exception) {
