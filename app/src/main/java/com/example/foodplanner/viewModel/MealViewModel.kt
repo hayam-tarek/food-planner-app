@@ -291,7 +291,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                 val meal = dao.getMealById(mealId.toInt())
                 withContext(Dispatchers.Main) {
                     if (meal == null) {
-                        _message.postValue("No meal found")
+                        _message.postValue("This meal is not in the favorites")
                     } else {
                         meal.isFavorite = true
                         _favoriteMeal.postValue(meal)

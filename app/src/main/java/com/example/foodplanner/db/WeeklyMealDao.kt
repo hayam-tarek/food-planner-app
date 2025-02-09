@@ -13,6 +13,9 @@ interface WeeklyMealDao {
     @Query("SELECT * FROM weekly_meals WHERE dayOfWeek = :day")
     suspend fun getMealByDay(day: String): WeeklyMeal
 
+    @Query("SELECT * FROM weekly_meals WHERE mealId = :id")
+    suspend fun getMealById(id: String): WeeklyMeal
+
     @Query("SELECT * FROM weekly_meals")
     suspend fun getAllMeals(): List<WeeklyMeal>
 

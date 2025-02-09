@@ -27,6 +27,7 @@ import com.example.foodplanner.R
 import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.db.WeeklyMealDataBase
 import com.example.foodplanner.model.Meal
+import com.example.foodplanner.model.convertJsonToMeal
 import com.example.foodplanner.model.getIngredientsList
 import com.example.foodplanner.model.getMeasuresList
 import com.example.foodplanner.network.ApiClient
@@ -76,6 +77,7 @@ class MealDetails : AppCompatActivity() {
                 mealViewModel.getMealDetails(mealId!!)
             } else {
                 mealViewModel.getFavoriteMealById(mealId!!)
+                weeklyMealViewModel.getMealById(mealId)
             }
         }
 
@@ -93,6 +95,13 @@ class MealDetails : AppCompatActivity() {
         }
         weeklyMealViewModel.message.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+        }
+
+        weeklyMealViewModel.mealById.observe(this) {
+            if (it != null) {
+                val meal = convertJsonToMeal(it.mealJson)
+                setupMealObservers(meal)
+            }
         }
 
     }

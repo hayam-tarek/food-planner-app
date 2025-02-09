@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.foodplanner.db.WeeklyMealDao
 import com.example.foodplanner.model.Meal
 import com.example.foodplanner.model.WeeklyMeal
+import com.example.foodplanner.model.convertMealToJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,6 +33,9 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
 
     private val _mealOfDay = MutableLiveData<WeeklyMeal>()
     val mealOfDay: LiveData<WeeklyMeal> get() = _mealOfDay
+
+    private val _mealById = MutableLiveData<WeeklyMeal>()
+    val mealById: LiveData<WeeklyMeal> get() = _mealById
 
     init {
         checkAndResetWeeklyMeals()
@@ -93,13 +97,15 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
             try {
                 val existingMeal = dao.getMealByDay(day)
                 if (existingMeal == null) {
+                    val mealJson = convertMealToJson(meal)
                     val weeklyMeal = WeeklyMeal(
                         mealName = meal.strMeal!!,
                         mealCategory = meal.strCategory!!,
                         mealId = meal.idMeal,
                         dayOfWeek = day,
                         dayShort = day.substring(0, 3),
-                        imageUrl = meal.strMealThumb
+                        imageUrl = meal.strMealThumb,
+                        mealJson = mealJson
                     )
                     dao.insertMeal(weeklyMeal)
                     withContext(Dispatchers.Main) {
@@ -136,6 +142,26 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                     _message.value = "Error: ${e.message}"
                 }
                 Log.i("WeeklyMealViewModel", "getMealByDay: ${e.message}")
+            }
+        }
+    }
+
+    fun getMealById(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val meal = dao.getMealById(id)
+                withContext(Dispatchers.Main) {
+                    if (meal == null) {
+                        _message.value = "This meal is not in your weekly plan"
+                    } else {
+                        _mealById.value = meal
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error: ${e.message}"
+                }
+                Log.i("WeeklyMealViewModel", "getMealById: ${e.message}")
             }
         }
     }

@@ -82,7 +82,10 @@ class RandomMealCardFragment : Fragment() {
         mealCountry.text = meal.strArea
         mealCategory.text = meal.strCategory
         requireActivity().runOnUiThread {
-            Glide.with(requireContext()).load(meal.strMealThumb).transform(RoundedCorners(25))
+            Glide.with(requireContext())
+                .load(meal.strMealThumb)
+                .transform(RoundedCorners(25))
+                .placeholder(R.drawable.logo_no_background)
                 .into(mealImage)
         }
     }
