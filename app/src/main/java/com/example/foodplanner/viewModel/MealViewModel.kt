@@ -313,8 +313,8 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     fun toggleFavorite(meal: Meal) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                var fullMeal :Meal = meal
-                if(meal.strArea == null || meal.strCategory == null){
+                var fullMeal: Meal = meal
+                if (meal.strArea == null || meal.strCategory == null) {
                     val mealDetails = retrofit.mealDetails(meal.idMeal)
                     if (mealDetails.meals.isNotEmpty()) {
                         fullMeal = mealDetails.meals[0]
