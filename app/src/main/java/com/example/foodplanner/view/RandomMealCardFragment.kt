@@ -28,10 +28,6 @@ class RandomMealCardFragment : Fragment() {
     private lateinit var mealCategory: TextView
     private lateinit var mealImage: ImageView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -71,10 +67,10 @@ class RandomMealCardFragment : Fragment() {
     }
 
     private fun initUI(view: View) {
-        mealName = view.findViewById<TextView>(R.id.mealName)
-        mealCountry = view.findViewById<TextView>(R.id.mealCountry)
-        mealImage = view.findViewById<ImageView>(R.id.mealImage)
-        mealCategory = view.findViewById<TextView>(R.id.mealCategory)
+        mealName = view.findViewById(R.id.mealName)
+        mealCountry = view.findViewById(R.id.mealCountry)
+        mealImage = view.findViewById(R.id.mealImage)
+        mealCategory = view.findViewById(R.id.mealCategory)
     }
 
     private fun updateUi(meal: Meal) {

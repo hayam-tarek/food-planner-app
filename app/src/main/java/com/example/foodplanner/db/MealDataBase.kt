@@ -9,7 +9,7 @@ abstract class MealDataBase : RoomDatabase() {
     abstract fun mealDao(): MealDao
 
     companion object {
-        const val DATABASE_NAME = "meal_database"
+        private const val DATABASE_NAME = "meal_database"
 
         @Volatile
         private var INSTANCE: MealDataBase? = null

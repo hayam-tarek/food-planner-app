@@ -26,10 +26,6 @@ class FavoritesFragment : Fragment(), MealListener {
     private lateinit var noFavsImage: ImageView
     private lateinit var noFavsText: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

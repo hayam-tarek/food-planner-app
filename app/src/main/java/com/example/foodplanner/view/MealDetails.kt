@@ -121,16 +121,15 @@ class MealDetails : AppCompatActivity() {
 
     private fun showDayPickerDialog(meal: Meal) {
         var selectedDayIndex = -1
-        var selectedDay: String = ""
+        var selectedDay = ""
         MaterialDialog(this, BottomSheet()).show {
             cornerRadius(25f)
             title(text = "Select a Day 📌")
             var result = listItemsSingleChoice(
                 items = daysOfWeek,
                 initialSelection = -1
-            ) { _, index, text ->
+            ) { _, index, _ ->
                 selectedDayIndex = index
-//                selectedDay = text.toString()
                 if (selectedDayIndex != -1) {
                     selectedDay = daysOfWeek[selectedDayIndex]
                     weeklyMealViewModel.insertMeal(meal, selectedDay)

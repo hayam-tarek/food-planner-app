@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="Ingredients"
+                    android:text="@string/ingredients"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Recipe video"
+                    android:text="@string/recipe_video"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Cooking steps"
+                    android:text="@string/cooking_steps"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -118,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Name..."
+                    android:text="@string/name"
                     android:textColor="?attr/colorPrimary"
                     android:textSize="26sp"
                     android:textStyle="bold|italic"
@@ -148,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Steps..."
+                    android:text="@string/steps"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -180,7 +180,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="8dp"
                         android:gravity="center"
-                        android:text="Area..."
+                        android:text="@string/area"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -195,7 +195,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginHorizontal="8dp"
                         android:gravity="center"
-                        android:text="Category..."
+                        android:text="@string/category"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -217,8 +217,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:text="Add to plan"
-        android:textSize="18dp"
+        android:text="@string/add_to_plan"
+        android:textSize="18sp"
         android:textColor="@color/white"
         android:layout_marginHorizontal="16dp"
         app:layout_anchor="@+id/frameLayout"
