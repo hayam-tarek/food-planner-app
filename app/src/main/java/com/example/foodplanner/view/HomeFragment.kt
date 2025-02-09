@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,10 +40,6 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
     private lateinit var seeAllAreas: TextView
     private var areasIsGridLayout = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,7 +54,7 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
         initUi(view)
         setupViewModel()
         networkViewModel.checkInternetConnection()
-        networkViewModel.isConnected.observe(viewLifecycleOwner, Observer { isConnected ->
+        networkViewModel.isConnected.observe(viewLifecycleOwner) { isConnected ->
             if (isConnected) {
                 noInternetImage.visibility = View.GONE
                 noInternetTxt.visibility = View.GONE
@@ -71,15 +66,15 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
                 mainContent.visibility = View.GONE
                 noInternetTxt.visibility = View.VISIBLE
             }
-        })
-        mealViewModel.areas.observe(viewLifecycleOwner, Observer { areas ->
+        }
+        mealViewModel.areas.observe(viewLifecycleOwner) { areas ->
             areasAdapter.data = areas.meals
             areasAdapter.notifyDataSetChanged()
-        })
-        mealViewModel.categories.observe(viewLifecycleOwner, Observer { categories ->
+        }
+        mealViewModel.categories.observe(viewLifecycleOwner) { categories ->
             categoriesAdapter.data = categories.categories
             categoriesAdapter.notifyDataSetChanged()
-        })
+        }
         tapToSearch.setOnClickListener {
             val query = searchBar.text.toString().trim()
             if (query.isNotEmpty()) {

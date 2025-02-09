@@ -5,18 +5,18 @@
     <item
         android:id="@+id/favoritesFragment"
         android:icon="@drawable/favorite_selector"
-        android:title="Favorites"
+        android:title="@string/favorites"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/home_selector"
-        android:title="Home"
+        android:title="@string/home"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/planMealsFragment"
         android:icon="@drawable/plan_selector"
-        android:title="Plan Meals"
+        android:title="@string/week_plan"
         app:showAsAction="ifRoom" />
 </menu>

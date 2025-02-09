@@ -8,5 +8,5 @@ object ApiClient {
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl("https://www.themealdb.com/api/json/v1/1/")
         .build()
-    val retrofitService = retrofit.create(RetrofitService::class.java)
+    val retrofitService:RetrofitService = retrofit.create(RetrofitService::class.java)
 }

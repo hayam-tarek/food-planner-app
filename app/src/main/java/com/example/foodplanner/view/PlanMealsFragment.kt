@@ -31,9 +31,6 @@ class PlanMealsFragment : Fragment(), WeeklyMealListener {
     private lateinit var noPlanTxt: TextView
     private lateinit var thisWeeksPlan: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

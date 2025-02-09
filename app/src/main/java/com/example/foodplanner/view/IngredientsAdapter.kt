@@ -34,8 +34,8 @@ Adapter<IngredientsAdapter.ItemsHolder>() {
 
 
     override fun onBindViewHolder(holder: ItemsHolder, position: Int) {
-        holder.title.text = data[position].toString()
-        holder.subTitle.text = subData[position].toString()
+        holder.title.text = data[position]
+        holder.subTitle.text = subData[position]
         holder.row.setOnClickListener {
             Toast.makeText(context, data[position], Toast.LENGTH_LONG).show()
         }
