@@ -313,6 +313,13 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     fun toggleFavorite(meal: Meal) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                var fullMeal :Meal = meal
+                if(meal.strArea == null || meal.strCategory == null){
+                    val mealDetails = retrofit.mealDetails(meal.idMeal)
+                    if (mealDetails.meals.isNotEmpty()) {
+                        fullMeal = mealDetails.meals[0]
+                    }
+                }
                 val existingMeal = dao.getMealById(meal.idMeal.toInt())
                 withContext(Dispatchers.Main) {
                     if (existingMeal != null) {
@@ -321,7 +328,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                         _isFavorite.postValue(false)
                         _message.postValue("Meal removed from favorites")
                     } else {
-                        dao.insert(meal)
+                        dao.insert(fullMeal)
                         meal.isFavorite = true
                         _isFavorite.postValue(true)
                         _message.postValue("Meal added to favorites")
