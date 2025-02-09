@@ -86,6 +86,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                 withContext(Dispatchers.Main) {
                     if (meal.meals.isEmpty()) {
                         _message.postValue("No meal found")
+                        _mealDetails.postValue(meal)
                     } else {
                         checkIfFavorite(meal.meals[0])
                         _mealDetails.postValue(meal)
@@ -107,6 +108,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                 withContext(Dispatchers.Main) {
                     if (meal.meals.isEmpty()) {
                         _message.postValue("No meals found")
+                        _filteredMeals.postValue(meal)
                     } else {
                         meal.meals.forEach { checkIfFavorite(it) }
                         _filteredMeals.postValue(meal)
@@ -128,6 +130,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                 withContext(Dispatchers.Main) {
                     if (meal.meals.isEmpty()) {
                         _message.postValue("No meals found")
+                        _filteredMeals.postValue(meal)
                     } else {
                         meal.meals.forEach { checkIfFavorite(it) }
                         _filteredMeals.postValue(meal)
@@ -149,6 +152,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                 withContext(Dispatchers.Main) {
                     if (meal.meals.isEmpty()) {
                         _message.postValue("No meals found")
+                        _filteredMeals.postValue(meal)
                     } else {
                         meal.meals.forEach { checkIfFavorite(it) }
                         _filteredMeals.postValue(meal)

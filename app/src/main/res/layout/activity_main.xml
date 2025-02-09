@@ -52,8 +52,8 @@
         android:layout_height="80dp"
         android:layout_gravity="bottom"
         android:background="?attr/colorSecondary"
-        app:itemIconTint="?attr/colorPrimary"
-        app:itemTextColor="?attr/colorPrimary"
+        app:itemIconTint="@color/bottom_nav_bar_icons_color"
+        app:itemTextColor="@color/bottom_nav_bar_icons_color"
         app:labelVisibilityMode="selected"
         app:menu="@menu/bottom_nav_menu" />
 

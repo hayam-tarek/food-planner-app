@@ -9,6 +9,7 @@
     <color name="secondary_color_night">#CBB6A7</color>
     <color name="tertiary_color_night">#DDA6A6</color>
     <color name="red">#FF0000</color>
+    <color name="bottom_nav_bar_icons_color">#3B2F2F</color>
     <color name="background_light">#FAF3E0</color>
     <color name="background_night">#2A2B1E</color>
     <!--    <color name="background_night">#3B2F2F</color>-->

@@ -2,10 +2,12 @@ package com.example.foodplanner.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
@@ -48,7 +51,10 @@ class MealDetails : AppCompatActivity() {
     private lateinit var mealCategory: TextView
     private lateinit var mealInstructions: TextView
     private lateinit var mealVideo: WebView
-    private lateinit var fabButton: FloatingActionButton
+    private lateinit var favoriteBtn: FloatingActionButton
+    private lateinit var mealDetailsBody: FrameLayout
+    private lateinit var loadingAnimationView: LottieAnimationView
+    private lateinit var nothingFoundAnimationView: LottieAnimationView
     private lateinit var ingredientsList: RecyclerView
     private lateinit var ingredientsAdapter: IngredientsAdapter
     private lateinit var recipeVideo: TextView
@@ -82,7 +88,12 @@ class MealDetails : AppCompatActivity() {
         }
 
         mealViewModel.mealDetails.observe(this) {
-            setupMealObservers(it.meals[0])
+            if (it.meals.isNotEmpty()) {
+                setupMealObservers(it.meals[0])
+            } else {
+                loadingAnimationView.visibility = View.GONE
+                nothingFoundAnimationView.visibility = View.VISIBLE
+            }
         }
         mealViewModel.isFavorite.observe(this) { isFavorite ->
             updateFavoriteIcon(isFavorite)
@@ -107,10 +118,14 @@ class MealDetails : AppCompatActivity() {
     }
 
     private fun setupMealObservers(meal: Meal) {
+        favoriteBtn.visibility = View.VISIBLE
+        mealDetailsBody.visibility = View.VISIBLE
+        addToPlanBtn.visibility = View.VISIBLE
+        loadingAnimationView.visibility = View.GONE
         updateUi(meal)
         mealViewModel.checkIfFavorite(meal)
 
-        fabButton.setOnClickListener {
+        favoriteBtn.setOnClickListener {
             mealViewModel.toggleFavorite(meal)
         }
 
@@ -153,11 +168,16 @@ class MealDetails : AppCompatActivity() {
 
     private fun updateFavoriteIcon(isFavorite: Boolean) {
         val icon = if (isFavorite) R.drawable.in_fav else R.drawable.out_fav
-        fabButton.setImageDrawable(ContextCompat.getDrawable(this, icon))
+        favoriteBtn.setImageDrawable(ContextCompat.getDrawable(this, icon))
         if (isFavorite) {
-            fabButton.drawable.setTint(ContextCompat.getColor(this, android.R.color.holo_red_dark))
+            favoriteBtn.drawable.setTint(
+                ContextCompat.getColor(
+                    this,
+                    android.R.color.holo_red_dark
+                )
+            )
         } else {
-            fabButton.drawable.setTint(ContextCompat.getColor(this, android.R.color.darker_gray))
+            favoriteBtn.drawable.setTint(ContextCompat.getColor(this, android.R.color.darker_gray))
         }
     }
 
@@ -193,9 +213,12 @@ class MealDetails : AppCompatActivity() {
         mealInstructions = findViewById(R.id.mealDetailSteps)
         mealVideo = findViewById(R.id.mealDetailVideo)
         recipeVideo = findViewById(R.id.recipeVideo)
-        fabButton = findViewById(R.id.fabButton)
+        favoriteBtn = findViewById(R.id.favoriteBtn)
         addToPlanBtn = findViewById(R.id.addToPlanBtn)
-        fabButton.imageTintList = null
+        loadingAnimationView = findViewById(R.id.loadingAnimationView)
+        nothingFoundAnimationView = findViewById(R.id.nothingFoundAnimationView)
+        mealDetailsBody = findViewById(R.id.mealDetailsBody)
+        favoriteBtn.imageTintList = null
         ingredientsList = findViewById(R.id.ingredientsList)
         ingredientsAdapter = IngredientsAdapter(this, listOf(), listOf())
         ingredientsList.adapter = ingredientsAdapter

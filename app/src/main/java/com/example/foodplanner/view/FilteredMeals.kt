@@ -29,6 +29,7 @@ class FilteredMeals : AppCompatActivity(), MealListener {
     private lateinit var mealsList: RecyclerView
     private lateinit var nothingImage: ImageView
     private lateinit var searchAnimation: LottieAnimationView
+    private lateinit var loadingAnimation: LottieAnimationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,14 +63,14 @@ class FilteredMeals : AppCompatActivity(), MealListener {
         mealViewModel.filteredMeals.observe(this) { meal ->
             if (meal.meals.isNullOrEmpty()) {
                 mealsList.visibility = View.GONE
-//                nothingImage.visibility = View.VISIBLE
+                loadingAnimation.visibility = View.GONE
                 searchAnimation.visibility = View.VISIBLE
             } else {
                 mealsAdapter.data = meal.meals
                 mealsAdapter.notifyDataSetChanged()
                 mealsList.visibility = View.VISIBLE
-//                nothingImage.visibility = View.GONE
                 searchAnimation.visibility = View.GONE
+                loadingAnimation.visibility = View.GONE
             }
         }
         mealViewModel.isFavorite.observe(this) { isFav ->
@@ -88,6 +89,7 @@ class FilteredMeals : AppCompatActivity(), MealListener {
         mealsList.adapter = mealsAdapter
         mealsList.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         searchAnimation = findViewById(R.id.searchAnimationView)
+        loadingAnimation = findViewById(R.id.loadingAnimationView)
 
     }
 

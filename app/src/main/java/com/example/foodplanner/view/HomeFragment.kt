@@ -38,6 +38,8 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
     private lateinit var searchBar: EditText
     private lateinit var noInternetTxt: TextView
     private lateinit var seeAllAreas: TextView
+    private lateinit var countriesTxt: TextView
+    private lateinit var categoriesTxt: TextView
     private var areasIsGridLayout = false
 
     override fun onCreateView(
@@ -70,10 +72,13 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
         mealViewModel.areas.observe(viewLifecycleOwner) { areas ->
             areasAdapter.data = areas.meals
             areasAdapter.notifyDataSetChanged()
+            countriesTxt.visibility = View.VISIBLE
+            seeAllAreas.visibility = View.VISIBLE
         }
         mealViewModel.categories.observe(viewLifecycleOwner) { categories ->
             categoriesAdapter.data = categories.categories
             categoriesAdapter.notifyDataSetChanged()
+            categoriesTxt.visibility = View.VISIBLE
         }
         tapToSearch.setOnClickListener {
             val query = searchBar.text.toString().trim()
@@ -129,6 +134,8 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
         categoriesList.adapter = categoriesAdapter
         categoriesList.layoutManager = GridLayoutManager(requireActivity(), 3)
         seeAllAreas = view.findViewById(R.id.seeAllAreas)
+        countriesTxt = view.findViewById(R.id.countriesTxt)
+        categoriesTxt = view.findViewById(R.id.categoriesTxt)
     }
 
     override fun onCategoryClicked(category: String) {

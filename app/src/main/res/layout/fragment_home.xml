@@ -67,20 +67,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categoriesList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/categoriesTxt"
-                app:layout_constraintVertical_bias="0.0"
-                app:spanCount="3" />
+            <ImageView
+                android:id="@+id/tapToSearch"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="15dp"
+                android:src="@drawable/search"
+                app:layout_constraintBottom_toBottomOf="@+id/searchBar"
+                app:layout_constraintEnd_toEndOf="@+id/searchBar"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/searchBar"
+                app:layout_constraintTop_toTopOf="@+id/searchBar" />
 
             <TextView
                 android:id="@+id/todaySuggestion"
@@ -116,12 +113,14 @@
                 android:text="@string/countries"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/randomMealCard"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/seeAllAreas"
@@ -130,12 +129,14 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/see_all"
                 android:textColor="#818181"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/countriesTxt"
                 app:layout_constraintTop_toBottomOf="@id/randomMealCard"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0"
+                tools:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/countriesList"
@@ -160,24 +161,29 @@
                 android:text="@string/categories"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/countriesList"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0"
+                tools:visibility="visible" />
 
-            <ImageView
-                android:id="@+id/tapToSearch"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="15dp"
-                android:src="@drawable/search"
-                app:layout_constraintBottom_toBottomOf="@+id/searchBar"
-                app:layout_constraintEnd_toEndOf="@+id/searchBar"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/searchBar"
-                app:layout_constraintTop_toTopOf="@+id/searchBar" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categoriesList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/categoriesTxt"
+                app:layout_constraintVertical_bias="0.0"
+                app:spanCount="3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

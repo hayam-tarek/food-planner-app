@@ -8,22 +8,26 @@
     tools:context=".view.MealDetails">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabButton"
+        android:id="@+id/favoriteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="?attr/colorTertiary"
         android:src="@drawable/out_fav"
+        android:visibility="gone"
         app:layout_anchor="@id/mealDetailImage"
-        app:layout_anchorGravity="bottom|right" />
+        app:layout_anchorGravity="bottom|right"
+        tools:visibility="visible" />
 
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/mealDetailsBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbarMealDetails"
         android:layout_marginTop="?android:attr/actionBarSize"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="50dp"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollViewMealDetails"
@@ -44,9 +48,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
                     android:scrollbars="vertical"
-                    android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -217,11 +221,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:text="@string/add_to_plan"
-        android:textSize="18sp"
-        android:textColor="@color/white"
         android:layout_marginHorizontal="16dp"
-        app:layout_anchor="@+id/frameLayout"
-        app:layout_anchorGravity="bottom|center" />
+        android:text="@string/add_to_plan"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_anchor="@+id/mealDetailsBody"
+        app:layout_anchorGravity="bottom|center"
+        tools:visibility="visible" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loadingAnimationView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading_animation"
+        tools:visibility="gone" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/nothingFoundAnimationView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/search_animation" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
