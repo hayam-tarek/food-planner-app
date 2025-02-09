@@ -219,6 +219,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:text="Add to plan"
         android:textSize="18dp"
+        android:textColor="@color/white"
         android:layout_marginHorizontal="16dp"
         app:layout_anchor="@+id/frameLayout"
         app:layout_anchorGravity="bottom|center" />

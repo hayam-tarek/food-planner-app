@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.foodplanner.R
 import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.network.ApiClient
@@ -37,6 +38,8 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
     private lateinit var tapToSearch: ImageView
     private lateinit var searchBar: EditText
     private lateinit var noInternetTxt: TextView
+    private lateinit var seeAllAreas: TextView
+    private var areasIsGridLayout = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +90,24 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
                 searchBar.error = "Please enter a meal name"
             }
         }
+        seeAllAreas.setOnClickListener {
+            toggleAreasViewLayout()
+        }
+    }
+
+    private fun toggleAreasViewLayout() {
+        if (areasIsGridLayout) {
+            countriesList.layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            seeAllAreas.text = "See All"
+        } else {
+            countriesList.layoutManager = StaggeredGridLayoutManager(
+                4,
+                StaggeredGridLayoutManager.VERTICAL
+            )
+            seeAllAreas.text = "See Less"
+        }
+        areasIsGridLayout = !areasIsGridLayout
     }
 
     private fun setupViewModel() {
@@ -112,6 +133,7 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
         categoriesAdapter = CategoriesAdapter(requireActivity(), listOf(), this)
         categoriesList.adapter = categoriesAdapter
         categoriesList.layoutManager = GridLayoutManager(requireActivity(), 3)
+        seeAllAreas = view.findViewById(R.id.seeAllAreas)
     }
 
     override fun onCategoryClicked(category: String) {
