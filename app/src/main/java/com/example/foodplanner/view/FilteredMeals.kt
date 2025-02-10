@@ -30,6 +30,13 @@ class FilteredMeals : AppCompatActivity(), MealListener {
     private lateinit var nothingImage: ImageView
     private lateinit var searchAnimation: LottieAnimationView
     private lateinit var loadingAnimation: LottieAnimationView
+    private lateinit var filterBy: String
+    private lateinit var type: String
+
+    override fun onResume() {
+        super.onResume()
+        getFilteredMeals()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,26 +47,15 @@ class FilteredMeals : AppCompatActivity(), MealListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val filterBy = intent.getStringArrayExtra("filterBy")?.get(0)
-        val type = intent.getStringArrayExtra("filterBy")?.get(1)
+        filterBy = intent.getStringArrayExtra("filterBy")?.get(0)!!
+        type = intent.getStringArrayExtra("filterBy")?.get(1)!!
 
         initUI()
         toolbar.title = type
         setupViewModel()
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        if (filterBy == "c") {
-            mealViewModel.getFilteredMealsByCategory(type!!)
-        }
-        if (filterBy == "a") {
-            mealViewModel.getFilteredMealsByArea(type!!)
-        }
-        if (filterBy == "i") {
-            mealViewModel.getFilteredMealsByIngredient(type!!)
-        }
-        if (filterBy == "s") {
-            mealViewModel.searchMeal(type!!)
-        }
+        getFilteredMeals()
         mealViewModel.filteredMeals.observe(this) { meal ->
             if (meal.meals.isNullOrEmpty()) {
                 mealsList.visibility = View.GONE
@@ -78,6 +74,21 @@ class FilteredMeals : AppCompatActivity(), MealListener {
         }
         mealViewModel.message.observe(this) { message ->
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getFilteredMeals() {
+        if (filterBy == "c") {
+            mealViewModel.getFilteredMealsByCategory(type)
+        }
+        if (filterBy == "a") {
+            mealViewModel.getFilteredMealsByArea(type)
+        }
+        if (filterBy == "i") {
+            mealViewModel.getFilteredMealsByIngredient(type)
+        }
+        if (filterBy == "s") {
+            mealViewModel.searchMeal(type)
         }
     }
 
