@@ -6,19 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
-import com.example.foodplanner.model.Ingredient
-import com.example.foodplanner.utils.IngredientsListener
 
-class IngredientsAdapter(
+class MealIngredientsAdapter(
     val context: Context,
-    var data: List<Ingredient>,
-    val listener: IngredientsListener
+    var data: List<String>,
+    var subData: List<String>
 ) : RecyclerView.
-Adapter<IngredientsAdapter.ItemsHolder>() {
+Adapter<MealIngredientsAdapter.ItemsHolder>() {
     class ItemsHolder(val row: View) : RecyclerView.ViewHolder(row) {
         val title: TextView = row.findViewById(R.id.itemTitle)
         val subTitle: TextView = row.findViewById(R.id.itemSubTitle)
@@ -39,15 +38,15 @@ Adapter<IngredientsAdapter.ItemsHolder>() {
 
 
     override fun onBindViewHolder(holder: ItemsHolder, position: Int) {
-        holder.title.text = data[position].strIngredient
-        holder.subTitle.text = ""
+        holder.title.text = data[position]
+        holder.subTitle.text = subData[position]
         Glide.with(context)
-            .load("https://www.themealdb.com/images/ingredients/${data[position].strIngredient}-Small.png")
+            .load("https://www.themealdb.com/images/ingredients/${data[position]}-Small.png")
             .transform(RoundedCorners(25))
             .placeholder(R.drawable.loading)
             .into(holder.ingredientImage)
         holder.row.setOnClickListener {
-            listener.onIngredientClicked(data[position].strIngredient)
+            Toast.makeText(context, data[position], Toast.LENGTH_LONG).show()
         }
     }
 

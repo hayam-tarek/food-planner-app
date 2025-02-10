@@ -56,7 +56,7 @@ class MealDetails : AppCompatActivity() {
     private lateinit var loadingAnimationView: LottieAnimationView
     private lateinit var nothingFoundAnimationView: LottieAnimationView
     private lateinit var ingredientsList: RecyclerView
-    private lateinit var ingredientsAdapter: IngredientsAdapter
+    private lateinit var ingredientsAdapter: MealIngredientsAdapter
     private lateinit var recipeVideo: TextView
     private lateinit var addToPlanBtn: Button
     private lateinit var weeklyMealViewModel: WeeklyMealViewModel
@@ -220,7 +220,7 @@ class MealDetails : AppCompatActivity() {
         mealDetailsBody = findViewById(R.id.mealDetailsBody)
         favoriteBtn.imageTintList = null
         ingredientsList = findViewById(R.id.ingredientsList)
-        ingredientsAdapter = IngredientsAdapter(this, listOf(), listOf())
+        ingredientsAdapter = MealIngredientsAdapter(this, listOf(), listOf())
         ingredientsList.adapter = ingredientsAdapter
         ingredientsList.layoutManager =
             StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)

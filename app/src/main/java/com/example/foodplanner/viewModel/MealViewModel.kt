@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.foodplanner.db.MealDao
 import com.example.foodplanner.model.AreaModel
 import com.example.foodplanner.model.CategoryModel
+import com.example.foodplanner.model.IngredientModel
 import com.example.foodplanner.model.Meal
 import com.example.foodplanner.model.MealModel
 import com.example.foodplanner.network.RetrofitService
@@ -50,6 +51,9 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
 
     private val _categories = MutableLiveData<CategoryModel>()
     val categories: LiveData<CategoryModel> get() = _categories
+
+    private val _ingredients = MutableLiveData<IngredientModel>()
+    val ingredients: LiveData<IngredientModel> get() = _ingredients
 
     private val _filteredMeals = MutableLiveData<MealModel>()
     val filteredMeals: LiveData<MealModel> get() = _filteredMeals
@@ -225,6 +229,26 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                     _message.value = "Error fetching categories: ${e.message}"
                 }
                 Log.i("MealViewModel", "getCategories: ${e.message}")
+            }
+        }
+    }
+
+    fun getIngredients(){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val ingredients = retrofit.ingredients()
+                withContext(Dispatchers.Main) {
+                    if (ingredients.meals.isEmpty()) {
+                        _message.postValue("No ingredients found")
+                    } else {
+                        _ingredients.postValue(ingredients)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    _message.value = "Error fetching ingredients: ${e.message}"
+                }
+                Log.i("MealViewModel", "getIngredients: ${e.message}")
             }
         }
     }

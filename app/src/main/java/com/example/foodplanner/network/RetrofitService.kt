@@ -2,6 +2,7 @@ package com.example.foodplanner.network
 
 import com.example.foodplanner.model.AreaModel
 import com.example.foodplanner.model.CategoryModel
+import com.example.foodplanner.model.IngredientModel
 import com.example.foodplanner.model.MealModel
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,6 +19,9 @@ interface RetrofitService {
 
     @GET("categories.php")
     suspend fun categories(): CategoryModel
+
+    @GET("list.php?i=list")
+    suspend fun ingredients(): IngredientModel
 
     @GET("filter.php")
     suspend fun filterByCategory(@Query("c") categoryName: String): MealModel

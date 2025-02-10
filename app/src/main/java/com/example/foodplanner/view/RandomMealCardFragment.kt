@@ -17,12 +17,11 @@ import com.example.foodplanner.model.Meal
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
-import com.example.foodplanner.viewModel.NetworkViewModel
 
 class RandomMealCardFragment : Fragment() {
 
     private lateinit var mealViewModel: MealViewModel
-    private lateinit var networkViewModel: NetworkViewModel
+    //    private lateinit var networkViewModel: NetworkViewModel
     private lateinit var mealName: TextView
     private lateinit var mealCountry: TextView
     private lateinit var mealCategory: TextView
@@ -40,12 +39,12 @@ class RandomMealCardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUI(view)
         setupViewModel()
-        networkViewModel.checkInternetConnection()
-        networkViewModel.isConnected.observe(viewLifecycleOwner) { isConnected ->
-            if (isConnected) {
-                mealViewModel.getRandomMeal()
-            }
-        }
+//        networkViewModel.checkInternetConnection()
+//        networkViewModel.isConnected.observe(viewLifecycleOwner) { isConnected ->
+//            if (isConnected) {
+//                mealViewModel.getRandomMeal()
+//            }
+//        }
         mealViewModel.randomMeal.observe(viewLifecycleOwner) { meals ->
             meals.meals[0].let {
                 updateUi(it)
@@ -63,7 +62,7 @@ class RandomMealCardFragment : Fragment() {
         val mealDao = MealDataBase.getInstance(requireContext()).mealDao()
         val mealFactory = MealFactory(retrofit, mealDao)
         mealViewModel = ViewModelProvider(requireActivity(), mealFactory)[MealViewModel::class.java]
-        networkViewModel = ViewModelProvider(requireActivity())[NetworkViewModel::class.java]
+//        networkViewModel = ViewModelProvider(requireActivity())[NetworkViewModel::class.java]
     }
 
     private fun initUI(view: View) {
