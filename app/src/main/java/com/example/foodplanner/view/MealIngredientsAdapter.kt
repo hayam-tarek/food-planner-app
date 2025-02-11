@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.foodplanner.R
+import es.dmoral.toasty.Toasty
 
 class MealIngredientsAdapter(
     val context: Context,
@@ -46,7 +47,7 @@ Adapter<MealIngredientsAdapter.ItemsHolder>() {
             .placeholder(R.drawable.loading)
             .into(holder.ingredientImage)
         holder.row.setOnClickListener {
-            Toast.makeText(context, data[position], Toast.LENGTH_LONG).show()
+            Toasty.info(context, data[position], Toast.LENGTH_LONG).show()
         }
     }
 

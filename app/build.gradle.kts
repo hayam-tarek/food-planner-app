@@ -63,4 +63,7 @@ dependencies {
     implementation("com.afollestad.material-dialogs:core:3.3.0")
     implementation("com.afollestad.material-dialogs:bottomsheets:3.3.0")
     implementation("com.airbnb.android:lottie:5.0.3")
+    implementation("com.github.GrenderG:Toasty:1.5.2")
+
+
 }

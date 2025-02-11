@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.foodplanner.viewModel.NetworkViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import es.dmoral.toasty.Toasty
 
 class MainActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
@@ -59,7 +60,8 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_refresh -> {
                 networkViewModel.checkInternetConnection()
-                Toast.makeText(this, "Refreshing...🔃", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "Refreshing...🔃", Toast.LENGTH_SHORT).show()
+                Toasty.info(this, "Updating...", Toast.LENGTH_SHORT, true).show()
                 true
             }
 

@@ -40,6 +40,7 @@ import com.example.foodplanner.viewModel.NetworkViewModel
 import com.example.foodplanner.viewModel.WeeklyMealFactory
 import com.example.foodplanner.viewModel.WeeklyMealViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import es.dmoral.toasty.Toasty
 
 class MealDetails : AppCompatActivity() {
     private lateinit var mealViewModel: MealViewModel
@@ -98,16 +99,39 @@ class MealDetails : AppCompatActivity() {
         mealViewModel.isFavorite.observe(this) { isFavorite ->
             updateFavoriteIcon(isFavorite)
         }
-        mealViewModel.message.observe(this) {
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+//        mealViewModel.message.observe(this) {
+//            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+//        }
+        mealViewModel.infoMessage.observe(this) {
+            Toasty.info(this, it, Toast.LENGTH_SHORT).show()
+        }
+        mealViewModel.warningMessage.observe(this) {
+            Toasty.warning(this, it, Toast.LENGTH_SHORT).show()
+        }
+        mealViewModel.successMessage.observe(this) {
+            Toasty.success(this, it, Toast.LENGTH_SHORT).show()
+        }
+        mealViewModel.errorMessage.observe(this) {
+            Toasty.error(this, it, Toast.LENGTH_SHORT).show()
         }
         mealViewModel.favoriteMeal.observe(this) {
             setupMealObservers(it)
         }
-        weeklyMealViewModel.message.observe(this) {
-            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+//        weeklyMealViewModel.message.observe(this) {
+//            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+//        }
+        weeklyMealViewModel.infoMessage.observe(this) {
+            Toasty.info(this, it, Toast.LENGTH_SHORT).show()
         }
-
+        weeklyMealViewModel.warningMessage.observe(this) {
+            Toasty.warning(this, it, Toast.LENGTH_SHORT).show()
+        }
+        weeklyMealViewModel.successMessage.observe(this) {
+            Toasty.success(this, it, Toast.LENGTH_SHORT).show()
+        }
+        weeklyMealViewModel.errorMessage.observe(this) {
+            Toasty.error(this, it, Toast.LENGTH_SHORT).show()
+        }
         weeklyMealViewModel.mealById.observe(this) {
             if (it != null) {
                 val meal = convertJsonToMeal(it.mealJson)
@@ -149,7 +173,7 @@ class MealDetails : AppCompatActivity() {
                     selectedDay = daysOfWeek[selectedDayIndex]
                     weeklyMealViewModel.insertMeal(meal, selectedDay)
                 } else {
-                    Toast.makeText(this@MealDetails, "Please select a day", Toast.LENGTH_SHORT)
+                    Toasty.info(this@MealDetails, "Please select a day", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
@@ -250,7 +274,7 @@ class MealDetails : AppCompatActivity() {
             mealVideo.webViewClient = WebViewClient()
             mealVideo.loadUrl(embedUrl)
         } catch (e: Exception) {
-            Toast.makeText(this, "No video found", Toast.LENGTH_SHORT).show()
+            Toasty.warning(this, "No video found", Toast.LENGTH_SHORT).show()
             mealVideo.visibility = WebView.GONE
             recipeVideo.visibility = TextView.GONE
         }
