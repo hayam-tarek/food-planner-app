@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +17,6 @@ import com.example.foodplanner.model.WeeklyMeal
 import com.example.foodplanner.utils.WeeklyMealListener
 import com.example.foodplanner.viewModel.WeeklyMealFactory
 import com.example.foodplanner.viewModel.WeeklyMealViewModel
-import es.dmoral.toasty.Toasty
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -62,21 +60,6 @@ class PlanMealsFragment : Fragment(), WeeklyMealListener {
                 noPlanTxt.visibility = View.VISIBLE
                 weeklyMealsList.visibility = View.GONE
             }
-        }
-//        weeklyMealViewModel.message.observe(viewLifecycleOwner) {
-//            Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
-//        }
-        weeklyMealViewModel.infoMessage.observe(viewLifecycleOwner) {
-            Toasty.info(requireActivity(), it, Toast.LENGTH_SHORT).show()
-        }
-        weeklyMealViewModel.warningMessage.observe(viewLifecycleOwner) {
-            Toasty.warning(requireActivity(), it, Toast.LENGTH_SHORT).show()
-        }
-        weeklyMealViewModel.successMessage.observe(viewLifecycleOwner) {
-            Toasty.success(requireActivity(), it, Toast.LENGTH_SHORT).show()
-        }
-        weeklyMealViewModel.errorMessage.observe(viewLifecycleOwner) {
-            Toasty.error(requireActivity(), it, Toast.LENGTH_SHORT).show()
         }
     }
 
