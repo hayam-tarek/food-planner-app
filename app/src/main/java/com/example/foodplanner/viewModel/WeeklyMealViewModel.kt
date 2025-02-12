@@ -37,6 +37,18 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
     private val _mealById = MutableLiveData<WeeklyMeal>()
     val mealById: LiveData<WeeklyMeal> get() = _mealById
 
+    private val _successMessage = MutableLiveData<String>()
+    val successMessage: LiveData<String> get() = _successMessage
+
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> get() = _errorMessage
+
+    private val _warningMessage = MutableLiveData<String>()
+    val warningMessage: LiveData<String> get() = _warningMessage
+
+    private val _infoMessage = MutableLiveData<String>()
+    val infoMessage: LiveData<String> get() = _infoMessage
+
     init {
         checkAndResetWeeklyMeals()
         getWeeklyMeals()
@@ -49,7 +61,7 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                 withContext(Dispatchers.Main) {
                     if (meals.isEmpty()) {
                         _weeklyMeals.value = listOf()
-//                        _message.value = "No weekly meals found"
+//                        _warningMessage.value = "No weekly meals found"
                     } else {
                         val sortedMeals = meals.sortedWith(compareBy {
                             when (it.dayShort) {
@@ -67,9 +79,9 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    _message.value = "Error: ${e.message}"
-                }
+//                withContext(Dispatchers.Main) {
+//                    _message.value = "Error: ${e.message}"
+//                }
                 Log.i("WeeklyMealViewModel", "getWeeklyMeals: ${e.message}")
             }
         }
@@ -80,13 +92,13 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
             try {
                 dao.deleteMeal(weeklyMeal)
                 withContext(Dispatchers.Main) {
-//                    _message.value = "Meal deleted successfully"
+                    _successMessage.value = "Meal deleted successfully"
                 }
                 getWeeklyMeals()
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    _message.value = "Error: ${e.message}"
-                }
+//                withContext(Dispatchers.Main) {
+//                    _message.value = "Error: ${e.message}"
+//                }
                 Log.i("WeeklyMealViewModel", "deleteMeal: ${e.message}")
             }
         }
@@ -109,18 +121,18 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                     )
                     dao.insertMeal(weeklyMeal)
                     withContext(Dispatchers.Main) {
-                        _message.value = "Meal added successfully"
+                        _successMessage.value = "Meal added successfully"
                     }
                 } else {
                     withContext(Dispatchers.Main) {
-                        _message.value = "A meal already added for $day ⚠"
+                        _warningMessage.value = "A meal already added for $day"
                     }
                 }
 
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    _message.value = "Error: ${e.message}"
-                }
+//                withContext(Dispatchers.Main) {
+//                    _message.value = "Error: ${e.message}"
+//                }
                 Log.i("WeeklyMealViewModel", "insertMeal: ${e.message}")
             }
         }
@@ -132,15 +144,15 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                 val meal = dao.getMealByDay(day)
                 withContext(Dispatchers.Main) {
                     if (meal == null) {
-                        _message.value = "No meal found for $day"
+                        _infoMessage.value = "No meal found for $day"
                     } else {
                         _mealOfDay.value = meal
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    _message.value = "Error: ${e.message}"
-                }
+//                withContext(Dispatchers.Main) {
+//                    _message.value = "Error: ${e.message}"
+//                }
                 Log.i("WeeklyMealViewModel", "getMealByDay: ${e.message}")
             }
         }
@@ -152,15 +164,15 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                 val meal = dao.getMealById(id)
                 withContext(Dispatchers.Main) {
                     if (meal == null) {
-                        _message.value = "This meal is not in your weekly plan"
+                        _infoMessage.value = "This meal is not in your weekly plan"
                     } else {
                         _mealById.value = meal
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    _message.value = "Error: ${e.message}"
-                }
+//                withContext(Dispatchers.Main) {
+//                    _message.value = "Error: ${e.message}"
+//                }
                 Log.i("WeeklyMealViewModel", "getMealById: ${e.message}")
             }
         }
@@ -177,12 +189,12 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                     dao.deleteAllMeals()
                     withContext(Dispatchers.Main) {
                         _weeklyMeals.value = listOf()
-//                        _message.value = "Weekly plan has been reset."
+                        _successMessage.value = "Weekly plan has been reset."
                     }
                 } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        _message.value = "Error: ${e.message}"
-                    }
+//                    withContext(Dispatchers.Main) {
+//                        _message.value = "Error: ${e.message}"
+//                    }
                     Log.i("WeeklyMealViewModel", "checkAndResetWeeklyMeals: ${e.message}")
                 }
             }

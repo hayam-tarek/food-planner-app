@@ -21,6 +21,7 @@ import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.utils.MealListener
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
+import es.dmoral.toasty.Toasty
 
 class FilteredMeals : AppCompatActivity(), MealListener {
     private lateinit var toolbar: Toolbar
@@ -72,8 +73,20 @@ class FilteredMeals : AppCompatActivity(), MealListener {
         mealViewModel.isFavorite.observe(this) { isFav ->
             mealsAdapter.notifyDataSetChanged()
         }
-        mealViewModel.message.observe(this) { message ->
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+//        mealViewModel.message.observe(this) { message ->
+//            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+//        }
+        mealViewModel.infoMessage.observe(this) {
+            Toasty.info(this, it, Toast.LENGTH_SHORT).show()
+        }
+        mealViewModel.warningMessage.observe(this) {
+            Toasty.warning(this, it, Toast.LENGTH_SHORT).show()
+        }
+        mealViewModel.successMessage.observe(this) {
+            Toasty.success(this, it, Toast.LENGTH_SHORT).show()
+        }
+        mealViewModel.errorMessage.observe(this) {
+            Toasty.error(this, it, Toast.LENGTH_SHORT).show()
         }
     }
 

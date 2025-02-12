@@ -20,4 +20,9 @@
         android:name="com.example.foodplanner.view.PlanMealsFragment"
         android:label="fragment_plan_meals"
         tools:layout="@layout/fragment_plan_meals" />
+    <fragment
+        android:id="@+id/ingredientsFragment"
+        android:name="com.example.foodplanner.view.IngredientsFragment"
+        android:label="fragment_ingredients"
+        tools:layout="@layout/fragment_ingredients" />
 </navigation>

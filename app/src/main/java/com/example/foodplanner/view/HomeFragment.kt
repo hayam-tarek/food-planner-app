@@ -63,6 +63,7 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
                 mainContent.visibility = View.VISIBLE
                 mealViewModel.getAreas()
                 mealViewModel.getCategories()
+                mealViewModel.getRandomMeal()
             } else {
                 noInternetImage.visibility = View.VISIBLE
                 mainContent.visibility = View.GONE
