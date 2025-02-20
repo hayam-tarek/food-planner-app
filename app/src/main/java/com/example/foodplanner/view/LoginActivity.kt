@@ -32,6 +32,19 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        loginButton.setOnClickListener {
+            val emailQuery = emailInput.text.toString()
+            val passwordQuery = passwordInput.text.toString()
+            if (emailQuery.isEmpty() || !emailQuery.contains('@')) {
+                emailInput.error = "Please enter a valid email"
+                return@setOnClickListener
+            }
+            if (passwordQuery.isEmpty() || passwordQuery.length < 8) {
+                passwordInput.error = "Please enter a strong password"
+                return@setOnClickListener
+            }
+            
+        }
 
     }
 
