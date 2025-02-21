@@ -32,6 +32,24 @@ class SignupActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+        signupButton.setOnClickListener {
+            val emailQuery = emailInput.text.toString()
+            val passwordQuery = passwordInput.text.toString()
+            val rePasswordQuery = rePasswordInput.text.toString()
+            if (emailQuery.isEmpty() || !emailQuery.contains('@')) {
+                emailInput.error = "Please enter a valid email"
+                return@setOnClickListener
+            }
+            if (passwordQuery.isEmpty() || passwordQuery.length < 8) {
+                passwordInput.error = "Please enter a strong password"
+                return@setOnClickListener
+            }
+            if (!rePasswordQuery.equals(passwordQuery)) {
+                rePasswordInput.error = "Passwords don't match."
+                return@setOnClickListener
+            }
+
+        }
     }
 
     private fun initUi() {
