@@ -5,4 +5,10 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
+    <style name="PopupMenuTextStyle" parent="Widget.Material3.PopupMenu">
+        <item name="android:textColor">@color/bottom_nav_bar_icons_color</item>
+        <item name="android:background">?attr/colorSecondary</item>
+        <item name="android:iconTint">@color/bottom_nav_bar_icons_color</item>
+    </style>
+
 </resources>
