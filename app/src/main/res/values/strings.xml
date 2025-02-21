@@ -79,4 +79,7 @@
     </string>
     <string name="welcome_sign_up_now_to_enjoy_all_the_features">Welcome! Sign up now to enjoy all the features.</string>
     <string name="re_enter_password">Re-enter password</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="backup">Backup</string>
+    <string name="more">More</string>
 </resources>
