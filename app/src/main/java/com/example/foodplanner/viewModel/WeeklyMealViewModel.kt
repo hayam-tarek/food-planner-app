@@ -10,6 +10,7 @@ import com.example.foodplanner.db.WeeklyMealDao
 import com.example.foodplanner.model.Meal
 import com.example.foodplanner.model.WeeklyMeal
 import com.example.foodplanner.model.convertMealToJson
+import com.example.foodplanner.utils.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,16 +49,18 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
 
     private val _infoMessage = MutableLiveData<String>()
     val infoMessage: LiveData<String> get() = _infoMessage
+    private var _uid: String = ""
 
     init {
         checkAndResetWeeklyMeals()
         getWeeklyMeals()
+        _uid = SharedPrefManager.getUserUID() ?: ""
     }
 
     fun getWeeklyMeals() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val meals = dao.getAllMeals()
+                val meals = dao.getAllMeals(_uid)
                 withContext(Dispatchers.Main) {
                     if (meals.isEmpty()) {
                         _weeklyMeals.value = listOf()
@@ -105,9 +108,13 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
     }
 
     fun insertMeal(meal: Meal, day: String) {
+        if (_uid.isEmpty()) {
+            _warningMessage.value = "Login to add meal to weekly plan"
+            return
+        }
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val existingMeal = dao.getMealByDay(day)
+                val existingMeal = dao.getMealByDay(day, _uid)
                 if (existingMeal == null) {
                     val mealJson = convertMealToJson(meal)
                     val weeklyMeal = WeeklyMeal(
@@ -117,7 +124,8 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
                         dayOfWeek = day,
                         dayShort = day.substring(0, 3),
                         imageUrl = meal.strMealThumb,
-                        mealJson = mealJson
+                        mealJson = mealJson,
+                        uid = _uid
                     )
                     dao.insertMeal(weeklyMeal)
                     withContext(Dispatchers.Main) {
@@ -141,7 +149,7 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
     fun getMealByDay(day: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val meal = dao.getMealByDay(day)
+                val meal = dao.getMealByDay(day, _uid)
                 withContext(Dispatchers.Main) {
                     if (meal == null) {
                         _infoMessage.value = "No meal found for $day"
@@ -161,7 +169,7 @@ class WeeklyMealViewModel(private val dao: WeeklyMealDao) : ViewModel() {
     fun getMealById(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val meal = dao.getMealById(id)
+                val meal = dao.getMealById(id, _uid)
                 withContext(Dispatchers.Main) {
                     if (meal == null) {
                         _infoMessage.value = "This meal is not in your weekly plan"
