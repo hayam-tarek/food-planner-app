@@ -20,6 +20,7 @@ import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.utils.AreaListener
 import com.example.foodplanner.utils.CategoryListener
+import com.example.foodplanner.utils.SharedPrefManager
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
 import com.example.foodplanner.viewModel.NetworkViewModel
@@ -61,7 +62,10 @@ class HomeFragment : Fragment(), CategoryListener, AreaListener {
                 noInternetImage.visibility = View.GONE
                 noInternetTxt.visibility = View.GONE
                 mainContent.visibility = View.VISIBLE
-                mealViewModel.getAreas()
+                if (SharedPrefManager.getUserUID() != null) {
+                    mealViewModel.getAreas()
+                    countriesList.visibility = View.VISIBLE
+                }
                 mealViewModel.getCategories()
                 mealViewModel.getRandomMeal()
             } else {

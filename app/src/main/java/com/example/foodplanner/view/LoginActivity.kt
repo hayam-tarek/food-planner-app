@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 AuthState.AUTH_IN_PROGRESS -> {
-                    loginButton.text = "Logging in..."
+                    loginButton.text = "Loading..."
                 }
 
                 AuthState.AUTH_FAILED -> {

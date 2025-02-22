@@ -72,7 +72,7 @@ class SignupActivity : AppCompatActivity() {
                 }
 
                 AuthState.AUTH_IN_PROGRESS -> {
-                    signupButton.text = "Signing up..."
+                    signupButton.text = "Loading..."
                 }
 
                 AuthState.AUTH_FAILED -> {

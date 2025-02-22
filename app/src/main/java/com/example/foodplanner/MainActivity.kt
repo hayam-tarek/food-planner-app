@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -15,12 +16,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.foodplanner.utils.AuthState
 import com.example.foodplanner.utils.SharedPrefManager
-import com.example.foodplanner.view.LoginActivity
 import com.example.foodplanner.view.WelcomeActivity
 import com.example.foodplanner.viewModel.AuthViewModel
 import com.example.foodplanner.viewModel.NetworkViewModel
@@ -70,6 +71,15 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
+
+        if (SharedPrefManager.getUserUID() == null) {
+            bottomNavigationView.visibility = View.GONE
+            val fragmentContainerView =
+                findViewById<FragmentContainerView>(R.id.fragmentContainerView)
+            val layoutParams = fragmentContainerView.layoutParams as ViewGroup.MarginLayoutParams
+            layoutParams.bottomMargin = 0
+            fragmentContainerView.layoutParams = layoutParams
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -110,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 
                             R.id.action_backup -> {
                                 if (networkViewModel.isConnected.value == true) {
-                                    if (SharedPrefManager.getUserUID()?.isEmpty() == false) {
+                                    if (SharedPrefManager.getUserUID() != null) {
                                         Toasty.info(
                                             this,
                                             "This feature will available soon",
