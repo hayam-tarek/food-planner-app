@@ -24,6 +24,7 @@ fun Meal.getMeasuresList(): List<String?> {
 
 @Entity(tableName = "meals")
 data class Meal(
+    val uid: String,
     val dateModified: String?,
     @PrimaryKey
     val idMeal: String,

@@ -19,7 +19,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.foodplanner.utils.AuthState
+import com.example.foodplanner.utils.SharedPrefManager
 import com.example.foodplanner.view.LoginActivity
+import com.example.foodplanner.view.WelcomeActivity
 import com.example.foodplanner.viewModel.AuthViewModel
 import com.example.foodplanner.viewModel.NetworkViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -46,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         authViewModel.authState.observe(this) {
             if (it == AuthState.AUTH_SUCCESS) {
-                val intent = Intent(this, LoginActivity::class.java)
+                val intent = Intent(this, WelcomeActivity::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -108,12 +110,21 @@ class MainActivity : AppCompatActivity() {
 
                             R.id.action_backup -> {
                                 if (networkViewModel.isConnected.value == true) {
-                                    Toasty.info(
-                                        this,
-                                        "This feature will available soon",
-                                        Toast.LENGTH_SHORT,
-                                        true
-                                    ).show()
+                                    if (SharedPrefManager.getUserUID()?.isEmpty() == false) {
+                                        Toasty.info(
+                                            this,
+                                            "This feature will available soon",
+                                            Toast.LENGTH_SHORT,
+                                            true
+                                        ).show()
+                                    } else {
+                                        Toasty.warning(
+                                            this,
+                                            "Login to Backup",
+                                            Toast.LENGTH_SHORT,
+                                            true
+                                        ).show()
+                                    }
                                 } else {
                                     Toasty.error(
                                         this,

@@ -10,14 +10,14 @@ import com.example.foodplanner.model.WeeklyMeal
 @Dao
 interface WeeklyMealDao {
 
-    @Query("SELECT * FROM weekly_meals WHERE dayOfWeek = :day")
-    suspend fun getMealByDay(day: String): WeeklyMeal
+    @Query("SELECT * FROM weekly_meals WHERE dayOfWeek = :day AND uid = :userId")
+    suspend fun getMealByDay(day: String, userId: String): WeeklyMeal
 
-    @Query("SELECT * FROM weekly_meals WHERE mealId = :id")
-    suspend fun getMealById(id: String): WeeklyMeal
+    @Query("SELECT * FROM weekly_meals WHERE mealId = :id AND uid = :userId")
+    suspend fun getMealById(id: String, userId: String): WeeklyMeal
 
-    @Query("SELECT * FROM weekly_meals")
-    suspend fun getAllMeals(): List<WeeklyMeal>
+    @Query("SELECT * FROM weekly_meals WHERE uid = :userId")
+    suspend fun getAllMeals(userId: String): List<WeeklyMeal>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeal(meal: WeeklyMeal)

@@ -13,6 +13,7 @@ import com.example.foodplanner.model.IngredientModel
 import com.example.foodplanner.model.Meal
 import com.example.foodplanner.model.MealModel
 import com.example.foodplanner.network.RetrofitService
+import com.example.foodplanner.utils.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -69,9 +70,11 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
 
     private val _infoMessage = MutableLiveData<String>()
     val infoMessage: LiveData<String> get() = _infoMessage
+    private var _uid: String = ""
 
     init {
         getFavorites()
+        _uid = SharedPrefManager.getUserUID() ?: ""
     }
 
     fun getRandomMeal() {
@@ -245,7 +248,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
         }
     }
 
-    fun getIngredients(){
+    fun getIngredients() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val ingredients = retrofit.ingredients()
@@ -268,7 +271,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     fun addMealToFav(meal: Meal) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val result = dao.insert(meal)
+                val result = dao.insert(meal.copy(uid = _uid))
                 withContext(Dispatchers.Main) {
                     if (result == -1L) {
                         _infoMessage.postValue("Meal already exists in the favorites")
@@ -289,7 +292,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     fun deleteMealFromFav(meal: Meal) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                dao.delete(meal)
+                dao.delete(meal.idMeal, _uid)
                 withContext(Dispatchers.Main) {
                     meal.isFavorite = false
                     _successMessage.postValue("Meal deleted from the favorites")
@@ -306,7 +309,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     fun getFavorites() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val meals = dao.getAll()
+                val meals = dao.getAll(_uid)
                 withContext(Dispatchers.Main) {
                     if (meals.isEmpty()) {
                         _favorites.postValue(listOf())
@@ -328,7 +331,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     fun getFavoriteMealById(mealId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val meal = dao.getMealById(mealId.toInt())
+                val meal = dao.getMealById(mealId.toInt(), _uid)
                 withContext(Dispatchers.Main) {
                     if (meal == null) {
                         _infoMessage.postValue("This meal is not in the favorites")
@@ -347,6 +350,10 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     }
 
     fun toggleFavorite(meal: Meal) {
+        if (_uid.isEmpty()) {
+            _warningMessage.value = "Login to add to favorites"
+            return
+        }
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 var fullMeal: Meal = meal
@@ -356,15 +363,15 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
                         fullMeal = mealDetails.meals[0]
                     }
                 }
-                val existingMeal = dao.getMealById(meal.idMeal.toInt())
+                val existingMeal = dao.getMealById(meal.idMeal.toInt(), _uid)
                 withContext(Dispatchers.Main) {
                     if (existingMeal != null) {
-                        dao.delete(meal)
+                        dao.delete(meal.idMeal, _uid)
                         meal.isFavorite = false
                         _isFavorite.postValue(false)
                         _successMessage.postValue("Meal removed from favorites")
                     } else {
-                        dao.insert(fullMeal)
+                        dao.insert(fullMeal.copy(uid = _uid))
                         meal.isFavorite = true
                         _isFavorite.postValue(true)
                         _successMessage.postValue("Meal added to favorites")
@@ -383,7 +390,7 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
     fun checkIfFavorite(meal: Meal) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val result = dao.getMealById(meal.idMeal.toInt())
+                val result = dao.getMealById(meal.idMeal.toInt(), _uid)
                 withContext(Dispatchers.Main) {
                     meal.isFavorite = result != null
                     _isFavorite.value = result != null
