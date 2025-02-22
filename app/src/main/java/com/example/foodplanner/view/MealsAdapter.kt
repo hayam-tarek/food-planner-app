@@ -55,8 +55,8 @@ Adapter<MealsAdapter.MealsHolder>() {
 
         holder.mealFavIcon.setOnClickListener {
             mealListener.onMealFavClicked(meal)
-            meal.isFavorite = !meal.isFavorite
-            updateFavoriteIcon(holder.mealFavIcon, meal.isFavorite)
+//            meal.isFavorite = !meal.isFavorite
+//            updateFavoriteIcon(holder.mealFavIcon, meal.isFavorite)
         }
     }
 

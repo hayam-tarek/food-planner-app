@@ -1,7 +1,6 @@
 package com.example.foodplanner.db
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -11,11 +10,11 @@ import com.example.foodplanner.model.Meal
 @Dao
 interface MealDao {
 
-    @Query("SELECT * FROM meals")
-    suspend fun getAll(): List<Meal>
+    @Query("SELECT * FROM meals WHERE uid = :userId")
+    suspend fun getAll(userId: String): List<Meal>
 
-    @Query("SELECT * FROM meals WHERE idMeal = :id")
-    suspend fun getMealById(id: Int): Meal
+    @Query("SELECT * FROM meals WHERE idMeal = :id AND uid = :userId")
+    suspend fun getMealById(id: Int, userId: String): Meal
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(meal: Meal): Long
@@ -23,6 +22,9 @@ interface MealDao {
     @Update
     suspend fun update(meal: Meal): Int
 
-    @Delete
-    suspend fun delete(meal: Meal)
+    @Query("DELETE FROM meals WHERE idMeal = :mealId AND uid = :userId")
+    suspend fun delete(mealId: String, userId: String)
+
+    @Query("SELECT EXISTS(SELECT 1 FROM meals WHERE idMeal = :mealId AND uid = :userId)")
+    suspend fun isMealFavorite(mealId: String, userId: String): Boolean
 }
