@@ -17,6 +17,7 @@ Food Planner is an Android application designed to help users explore global mea
 - **Backup and Restore**: Sync your favorite meals with the cloud to back up and restore them (requires login).
 - **Weekly plan**: Add meals to your weekly plan, which resets every week (requires login).
 - **Offline mode**: View your favorites and weekly plan even without an internet connection.
+- **Dark and Light Mode**: Switch between Dark Mode and Light Mode for a personalized viewing experience.
 
 ## Technologies Used:
 - **Retrofit** - For making API requests to fetch meal data from a remote server.
@@ -45,19 +46,29 @@ Food Planner is an Android application designed to help users explore global mea
 ## Screen Shots
 
 <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-  <img src="https://github.com/user-attachments/assets/3a5aa5f7-a742-428b-88e8-8345a6bc1d10" alt="Image 13" width="150">
-  <img src="https://github.com/user-attachments/assets/ed52d65b-0567-47b2-8952-1618c5456b25" alt="Image 12" width="150">
-  <img src="https://github.com/user-attachments/assets/428650ee-e590-42f8-be32-60b2b229fa03" alt="Image 11" width="150">
-  <img src="https://github.com/user-attachments/assets/647c3011-05c4-4535-af11-e9045d18e023" alt="Image 5" width="150">
-  <img src="https://github.com/user-attachments/assets/6b412f79-051a-48ca-a183-d8b2af46845b" alt="Image 8" width="150">
+  <img src="https://github.com/user-attachments/assets/cbfeef31-77ce-4d51-9c55-52ca3e429c13" alt="Image 4" width="150">
+  <img src="https://github.com/user-attachments/assets/cd5c8ee6-a83b-4812-b789-8d78204cb743" alt="Image 2" width="150">
+  <img src="https://github.com/user-attachments/assets/30cbdc70-0b6c-4c61-80c5-174f714c428e" alt="Image 3" width="150">
+  <img src="https://github.com/user-attachments/assets/d1be56b4-6b84-458d-9507-0e8b13867219" alt="Image 1" width="150">
 </div>
 
 <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+  <img src="https://github.com/user-attachments/assets/3a5aa5f7-a742-428b-88e8-8345a6bc1d10" alt="Image 13" width="150">
+  <img src="https://github.com/user-attachments/assets/ed52d65b-0567-47b2-8952-1618c5456b25" alt="Image 12" width="150">
+  <img src="https://github.com/user-attachments/assets/d8524685-fad6-4a32-933a-c69d99ea00f6" alt="Image 14" width="150">
+  <img src="https://github.com/user-attachments/assets/428650ee-e590-42f8-be32-60b2b229fa03" alt="Image 11" width="150">
+  <img src="https://github.com/user-attachments/assets/647c3011-05c4-4535-af11-e9045d18e023" alt="Image 5" width="150">
+  
+</div>
+
+<div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+  <img src="https://github.com/user-attachments/assets/6b412f79-051a-48ca-a183-d8b2af46845b" alt="Image 8" width="150">
   <img src="https://github.com/user-attachments/assets/377d45c9-dd4d-4266-a88f-9c03328b516d" alt="Image 7" width="150">
   <img src="https://github.com/user-attachments/assets/a841018e-a396-4bcd-8275-40239ad8d18d" alt="Image 9" width="150">
   <img src="https://github.com/user-attachments/assets/43af9f59-5670-457f-8bad-da9906a344bf" alt="Image 10" width="150">
   <img src="https://github.com/user-attachments/assets/afde8890-d7d6-4770-a812-9da3b44c63ec" alt="Image 6" width="150">
 </div>
+
 
 ## Demo video
 [Food Planner](https://www.youtube.com/watch?v=uQdKqRqja3I)
