@@ -82,4 +82,5 @@
     <string name="sign_out">Sign Out</string>
     <string name="backup">Backup</string>
     <string name="more">More</string>
+    <string name="click_here_to_restore_your_backup">Click here to restore your backup! 🔄</string>
 </resources>

@@ -50,6 +50,9 @@ class CloudViewModel(private val dao: MealDao) : ViewModel() {
     private val _lastBackupTimestamp = MutableLiveData<String?>()
     val lastBackupTimestamp: LiveData<String?> get() = _lastBackupTimestamp
 
+    private val _restoredFavorites = MutableLiveData<List<Meal>>()
+    val restoredFavorites: LiveData<List<Meal>> get() = _restoredFavorites
+
     private var _uid: String = ""
 
     init {
@@ -179,11 +182,13 @@ class CloudViewModel(private val dao: MealDao) : ViewModel() {
                 val restoredFavorites = favoritesData.map { mealMap ->
                     Meal.fromMap(mealMap).copy(uid = _uid)
                 }
+                restoredFavorites.forEach { it.isFavorite = true }
 
                 dao.deleteAll(_uid)
                 dao.insertAll(restoredFavorites)
 
                 withContext(Dispatchers.Main) {
+                    _restoredFavorites.postValue(restoredFavorites)
                     _successMessage.postValue("Favorites restored successfully")
                 }
             } catch (e: Exception) {

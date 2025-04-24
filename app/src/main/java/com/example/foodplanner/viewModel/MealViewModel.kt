@@ -268,44 +268,6 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
         }
     }
 
-    fun addMealToFav(meal: Meal) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val result = dao.insert(meal.copy(uid = _uid))
-                withContext(Dispatchers.Main) {
-                    if (result == -1L) {
-                        _infoMessage.postValue("Meal already exists in the favorites")
-                    } else {
-                        meal.isFavorite = true
-                        _successMessage.postValue("Meal added to the favorites")
-                    }
-                }
-            } catch (e: Exception) {
-//                withContext(Dispatchers.Main) {
-//                    _message.value = "Error adding meal to favorites: ${e.message}"
-//                }
-                Log.i("MealViewModel", "addMealToDb: ${e.message}")
-            }
-        }
-    }
-
-    fun deleteMealFromFav(meal: Meal) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                dao.delete(meal.idMeal, _uid)
-                withContext(Dispatchers.Main) {
-                    meal.isFavorite = false
-                    _successMessage.postValue("Meal deleted from the favorites")
-                }
-            } catch (e: Exception) {
-//                withContext(Dispatchers.Main) {
-//                    _message.value = "Error deleting meal from favorites: ${e.message}"
-//                }
-                Log.i("MealViewModel", "deleteMealFromFav: ${e.message}")
-            }
-        }
-    }
-
     fun getFavorites() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
