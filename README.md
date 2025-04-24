@@ -3,16 +3,19 @@
 
 ## Description
 
-Food Planner is an Android application designed to help users explore global meals from around the world. The app allows users to search for meals, view daily meal suggestions, explore meals by country and category, and view detailed meal information. Users can also add meals to their favorites and weekly meal plan, which is automatically reset every week to allow new meal planning. The app works offline, allowing users to access their favorite meals and weekly plan even without an internet connection.
+Food Planner is an Android application designed to help users explore global meals from around the world. The app allows users to register and log in using their email and password, or use Guest Mode to view random meals, search, and explore categories without signing in. Users can search for meals, view daily meal suggestions, explore meals by country and category, and view detailed meal information. Logged-in users can add meals to their favorites, sync them with the cloud for backup and restore, and create a weekly meal plan that automatically resets every week for new meal planning. The app works offline, allowing users to access their favorite meals and weekly plan even without an internet connection.
 
 ### Key Features:
+- **Authentication**: Register and log in using email and password to access full features.
+- **Guest Mode**: View random meals, use search, and explore categories without signing in.
 - **Search for meals**: Find meals by name or ingredient.
 - **Daily meal suggestions**: Get suggestions for meals for the current day.
 - **Meals by country**: View meals from a specific country by selecting from a list of countries.
 - **Meals by category**: Explore meals by their respective categories (e.g., beef, chicken, etc.)
 - **Meal details**: View detailed information about each meal including ingredients, instructions, and more.
-- **Favorites**: Save your favorite meals to access them later.
-- **Weekly plan**: Add meals to your weekly plan, which resets every week.
+- **Favorites**: Save your favorite meals to access them later (requires login).
+- **Backup and Restore**: Sync your favorite meals with the cloud to back up and restore them (requires login).
+- **Weekly plan**: Add meals to your weekly plan, which resets every week (requires login).
 - **Offline mode**: View your favorites and weekly plan even without an internet connection.
 
 ## Technologies Used:
@@ -24,15 +27,19 @@ Food Planner is an Android application designed to help users explore global mea
 - **Navigation Component** - For smooth navigation between fragments.
 - **Material Dialogs** - For showing custom dialogs and bottom sheets.
 - **Lottie** - For adding animations to the app.
+- **Firebase Authentication** - For user registration and login using email and password.
+- **Firebase Firestore** - For cloud backup and restore of favorite meals.
 
 ## Usage
 
+- Register or log in using your email and password to access all features, or choose Guest Mode to explore limited features like viewing random meals, searching, and browsing categories.
 - On the home screen, you can search for meals by name or ingredient.
 - On the home screen, you can view a random meal suggestion for the day.
 - View meals by selecting a country from the list of countries or by meal category.
 - Tap on a meal to see its details including ingredients and instructions.
-- Add meals to your favorites by clicking the heart icon.
-- Plan your meals for the week, which will automatically reset every week.
+- Add meals to your favorites by clicking the heart icon (requires login).
+- Click here to restore your backup! 🔄 Use the backup and restore options to sync your favorite meals with the cloud (requires login).
+- Plan your meals for the week, which will automatically reset every week (requires login).
 - View your favorite meals and weekly plan even when offline.
 
 ## Screen Shots
