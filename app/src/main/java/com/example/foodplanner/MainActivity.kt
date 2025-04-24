@@ -20,10 +20,13 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.utils.AuthState
 import com.example.foodplanner.utils.SharedPrefManager
 import com.example.foodplanner.view.WelcomeActivity
 import com.example.foodplanner.viewModel.AuthViewModel
+import com.example.foodplanner.viewModel.CloudViewModel
+import com.example.foodplanner.viewModel.CloudViewModelFactory
 import com.example.foodplanner.viewModel.NetworkViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import es.dmoral.toasty.Toasty
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var networkViewModel: NetworkViewModel
     private lateinit var authViewModel: AuthViewModel
+    private lateinit var cloudViewModel: CloudViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +48,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        networkViewModel = ViewModelProvider(this)[NetworkViewModel::class.java]
-        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        setupViewModel()
 
         authViewModel.authState.observe(this) {
             if (it == AuthState.AUTH_SUCCESS) {
@@ -56,6 +59,19 @@ class MainActivity : AppCompatActivity() {
         }
         authViewModel.errorMessage.observe(this) {
             Toasty.error(this, it, Toast.LENGTH_SHORT, true).show()
+        }
+
+        cloudViewModel.successMessage.observe(this) {
+            Toasty.success(this, it, Toast.LENGTH_SHORT, true).show()
+        }
+        cloudViewModel.errorMessage.observe(this) {
+            Toasty.error(this, it, Toast.LENGTH_SHORT, true).show()
+        }
+        cloudViewModel.warningMessage.observe(this) {
+            Toasty.warning(this, it, Toast.LENGTH_SHORT, true).show()
+        }
+        cloudViewModel.infoMessage.observe(this) {
+            Toasty.info(this, it, Toast.LENGTH_SHORT, true).show()
         }
 
         toolbar = findViewById(R.id.toolbar)
@@ -80,6 +96,14 @@ class MainActivity : AppCompatActivity() {
             layoutParams.bottomMargin = 0
             fragmentContainerView.layoutParams = layoutParams
         }
+    }
+
+    private fun setupViewModel() {
+        networkViewModel = ViewModelProvider(this)[NetworkViewModel::class.java]
+        authViewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        val mealDao = MealDataBase.getInstance(this).mealDao()
+        val cloudViewModelFactory = CloudViewModelFactory(mealDao)
+        cloudViewModel = ViewModelProvider(this, cloudViewModelFactory)[CloudViewModel::class.java]
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -121,12 +145,7 @@ class MainActivity : AppCompatActivity() {
                             R.id.action_backup -> {
                                 if (networkViewModel.isConnected.value == true) {
                                     if (SharedPrefManager.getUserUID() != null) {
-                                        Toasty.info(
-                                            this,
-                                            "This feature will available soon",
-                                            Toast.LENGTH_SHORT,
-                                            true
-                                        ).show()
+                                        cloudViewModel.backupFavoritesToFirestore()
                                     } else {
                                         Toasty.warning(
                                             this,

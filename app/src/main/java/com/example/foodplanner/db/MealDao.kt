@@ -27,4 +27,10 @@ interface MealDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM meals WHERE idMeal = :mealId AND uid = :userId)")
     suspend fun isMealFavorite(mealId: String, userId: String): Boolean
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(meals: List<Meal>): List<Long>
+
+    @Query("DELETE FROM meals WHERE uid = :userId")
+    suspend fun deleteAll(userId: String)
 }
