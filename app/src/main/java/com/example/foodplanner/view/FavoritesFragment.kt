@@ -16,12 +16,16 @@ import com.example.foodplanner.db.MealDataBase
 import com.example.foodplanner.model.Meal
 import com.example.foodplanner.network.ApiClient
 import com.example.foodplanner.utils.MealListener
+import com.example.foodplanner.viewModel.CloudViewModel
+import com.example.foodplanner.viewModel.CloudViewModelFactory
 import com.example.foodplanner.viewModel.MealFactory
 import com.example.foodplanner.viewModel.MealViewModel
 
 class FavoritesFragment : Fragment(), MealListener {
     private lateinit var favoritesRecyclerView: RecyclerView
     private lateinit var mealViewModel: MealViewModel
+    private lateinit var cloudViewModel: CloudViewModel
+    private lateinit var restoreBtn: TextView
     private lateinit var mealsAdapter: MealsAdapter
     private lateinit var noFavsImage: ImageView
     private lateinit var noFavsText: TextView
@@ -45,17 +49,38 @@ class FavoritesFragment : Fragment(), MealListener {
                 favoritesRecyclerView.visibility = View.VISIBLE
                 noFavsImage.visibility = View.GONE
                 noFavsText.visibility = View.GONE
+                restoreBtn.visibility = View.GONE
                 mealsAdapter.data = meals
                 mealsAdapter.notifyDataSetChanged()
             } else {
                 favoritesRecyclerView.visibility = View.GONE
                 noFavsText.visibility = View.VISIBLE
                 noFavsImage.visibility = View.VISIBLE
+                restoreBtn.visibility = View.VISIBLE
             }
 
         }
         mealViewModel.isFavorite.observe(viewLifecycleOwner) { isFav ->
             mealsAdapter.notifyDataSetChanged()
+        }
+
+        restoreBtn.setOnClickListener {
+            cloudViewModel.restoreFavoritesFromFirestore()
+        }
+        cloudViewModel.restoredFavorites.observe(viewLifecycleOwner) { meals ->
+            if (meals.isNotEmpty()) {
+                favoritesRecyclerView.visibility = View.VISIBLE
+                noFavsImage.visibility = View.GONE
+                noFavsText.visibility = View.GONE
+                restoreBtn.visibility = View.GONE
+                mealsAdapter.data = meals
+                mealsAdapter.notifyDataSetChanged()
+            } else {
+                favoritesRecyclerView.visibility = View.GONE
+                noFavsText.visibility = View.VISIBLE
+                noFavsImage.visibility = View.VISIBLE
+                restoreBtn.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -72,6 +97,7 @@ class FavoritesFragment : Fragment(), MealListener {
         favoritesRecyclerView.adapter = mealsAdapter
         favoritesRecyclerView.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        restoreBtn = view.findViewById(R.id.restoreBtn)
     }
 
     private fun setupViewModel() {
@@ -79,6 +105,8 @@ class FavoritesFragment : Fragment(), MealListener {
         val mealDao = MealDataBase.getInstance(requireContext()).mealDao()
         val mealFactory = MealFactory(retrofit, mealDao)
         mealViewModel = ViewModelProvider(requireActivity(), mealFactory)[MealViewModel::class.java]
+        val cloudViewModelFactory = CloudViewModelFactory(mealDao)
+        cloudViewModel = ViewModelProvider(requireActivity(), cloudViewModelFactory)[CloudViewModel::class.java]
 
     }
 

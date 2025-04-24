@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.foodplanner.model.WeeklyMeal
 
-@Database(entities = [WeeklyMeal::class], version = 2)
+@Database(entities = [WeeklyMeal::class], version = 3)
 abstract class WeeklyMealDataBase : RoomDatabase() {
     abstract fun weeklyMealDao(): WeeklyMealDao
 
@@ -18,7 +18,7 @@ abstract class WeeklyMealDataBase : RoomDatabase() {
                 val tempInstance = androidx.room.Room.databaseBuilder(
                     context.applicationContext,
                     WeeklyMealDataBase::class.java, DATABASE_NAME
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = tempInstance
                 tempInstance
             }

@@ -8,6 +8,7 @@ import com.google.gson.Gson
 data class WeeklyMeal(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val mealId: String,
+    val uid: String,
     val mealName: String,
     val mealCategory: String,
     val dayOfWeek: String,

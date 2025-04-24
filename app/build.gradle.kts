@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin") // for Safe Args
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -64,6 +65,10 @@ dependencies {
     implementation("com.afollestad.material-dialogs:bottomsheets:3.3.0")
     implementation("com.airbnb.android:lottie:5.0.3")
     implementation("com.github.GrenderG:Toasty:1.5.2")
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
 
 
 }
