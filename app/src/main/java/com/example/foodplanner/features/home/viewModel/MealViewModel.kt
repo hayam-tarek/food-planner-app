@@ -183,7 +183,6 @@ class MealViewModel(private val retrofit: RetrofitService, private val dao: Meal
         }
     }
 
-
     /**
      * In FilterMealsViewModel
      * */
