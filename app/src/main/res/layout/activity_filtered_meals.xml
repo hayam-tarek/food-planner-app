@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.FilteredMeals">
+    tools:context=".features.filterMeals.view.FilteredMeals">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"

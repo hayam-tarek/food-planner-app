@@ -17,16 +17,16 @@
         android:theme="@style/Theme.FoodPlanner"
         tools:targetApi="31">
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".features.auth.view.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".view.WelcomeActivity"
+            android:name=".features.auth.view.WelcomeActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SignupActivity"
+            android:name=".features.auth.view.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".view.AnimatedSplashScreen"
+            android:name=".features.splash.view.AnimatedSplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,13 +35,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.FilteredMeals"
+            android:name=".features.filterMeals.view.FilteredMeals"
             android:exported="false" />
         <activity
-            android:name=".view.MealDetails"
+            android:name=".features.home.view.MealDetails"
             android:exported="false" />
         <activity
-            android:name=".view.SplashActivity"
+            android:name=".features.splash.view.SplashActivity"
             android:exported="true">
 
             <!-- android:theme="@style/SplashTheme" -->
@@ -55,7 +55,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".features.mainLayout.view.MainActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.HomeFragment">
+    tools:context=".features.home.view.HomeFragment">
 
     <ImageView
         android:id="@+id/noInternetImage"
@@ -96,7 +96,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/randomMealCard"
-                android:name="com.example.foodplanner.view.RandomMealCardFragment"
+                android:name="com.example.foodplanner.features.home.view.fragments.RandomMealCardFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".view.RandomMealCardFragment">
+    tools:context=".features.home.view.fragments.RandomMealCardFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

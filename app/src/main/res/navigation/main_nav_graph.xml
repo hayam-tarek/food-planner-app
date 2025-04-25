@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.foodplanner.view.HomeFragment"
+        android:name="com.example.foodplanner.features.home.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.foodplanner.view.FavoritesFragment"
+        android:name="com.example.foodplanner.features.favorites.view.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/planMealsFragment"
-        android:name="com.example.foodplanner.view.PlanMealsFragment"
+        android:name="com.example.foodplanner.features.weeklyPlan.view.PlanMealsFragment"
         android:label="fragment_plan_meals"
         tools:layout="@layout/fragment_plan_meals" />
     <fragment
         android:id="@+id/ingredientsFragment"
-        android:name="com.example.foodplanner.view.IngredientsFragment"
+        android:name="com.example.foodplanner.features.home.view.IngredientsFragment"
         android:label="fragment_ingredients"
         tools:layout="@layout/fragment_ingredients" />
 </navigation>
